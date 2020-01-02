@@ -1,71 +1,134 @@
 <?
 require($_SERVER['DOCUMENT_ROOT'].'/bitrix/header.php');
+
+/**
+ * @global $rsAsset
+ * @global $APPLICATION
+ */
+
 $APPLICATION->SetTitle('О компании');
-?>
+$APPLICATION->SetPageProperty('description', '');
+$APPLICATION->SetPageProperty('keywords', '');
 
-<div class="card-body bg-white border mb-3">
-    <div class="h3 mb-4">Lorem ipsum</div>
-    <div class="row">
-        <div class="col-lg-8">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
-        </div>
-        <div class="col-lg-4">
-            <img src="<?=SITE_TEMPLATE_PATH?>/images/no-image.png">
-        </div>
-    </div>
-</div>
-<div class="card-body bg-white border mb-3">
-    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#home" role="tab" aria-controls="home" aria-selected="true">Lorem ipsum</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#profile" role="tab" aria-controls="profile" aria-selected="false">ipsum dolor</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#contact" role="tab" aria-controls="contact" aria-selected="false">dolor sit</a>
-        </li>
-    </ul>
-    <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
-        </div>
-        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
-        </div>
-        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
-        </div>
-    </div>
-</div>
-<div class="mb-3">
-    <div
-            class="clearfix js-slider"
-            data-autoplay="true"
-            data-autoplaySpeed="5000"
-            data-infinite="false"
-            data-speed="1000"
-            data-arrows="false"
-            data-dots="true"
-            data-slidesToShow="1"
-    >
-        <div class="float-left text-center">
-            <img src="<?=SITE_TEMPLATE_PATH?>/images/no-image.png">
-        </div>
-        <div class="float-left text-center">
-            <img src="<?=SITE_TEMPLATE_PATH?>/images/no-image.png">
-        </div>
-    </div>
-</div>
+$APPLICATION->IncludeComponent(
+    "bitrix:news.list",
+    "text-image",
+    [
+        "DISPLAY_DATE" => "Y",
+        "DISPLAY_NAME" => "Y",
+        "DISPLAY_PICTURE" => "Y",
+        "DISPLAY_PREVIEW_TEXT" => "Y",
+        "AJAX_MODE" => "N",
+        "IBLOCK_TYPE" => "content",
+        "IBLOCK_ID" => IBLOCK_CONTENT_INFO,
+        "NEWS_COUNT" => "10",
+        "SORT_BY1" => "ACTIVE_DATE",
+        "SORT_ORDER1" => "DESC",
+        "SORT_BY2" => "SORT",
+        "SORT_ORDER2" => "ASC",
+        "FILTER_NAME" => "",
+        "FIELD_CODE" => Array("ID", "NAME", "PREVIEW_TEXT", "PREVIEW_PICTURE"),
+        "PROPERTY_CODE" => Array(),
+        "CHECK_DATES" => "N",
+        "DETAIL_URL" => "",
+        "PREVIEW_TRUNCATE_LEN" => "",
+        "ACTIVE_DATE_FORMAT" => "d.m.Y",
+        "SET_TITLE" => "N",
+        "SET_BROWSER_TITLE" => "N",
+        "SET_META_KEYWORDS" => "N",
+        "SET_META_DESCRIPTION" => "N",
+        "SET_LAST_MODIFIED" => "Y",
+        "INCLUDE_IBLOCK_INTO_CHAIN" => "N",
+        "ADD_SECTIONS_CHAIN" => "N",
+        "HIDE_LINK_WHEN_NO_DETAIL" => "Y",
+        "PARENT_SECTION" => "",
+        "PARENT_SECTION_CODE" => "about-text",
+        "INCLUDE_SUBSECTIONS" => "Y",
+        "CACHE_TYPE" => "A",
+        "CACHE_TIME" => "3600",
+        "CACHE_FILTER" => "Y",
+        "CACHE_GROUPS" => "Y",
+        "DISPLAY_TOP_PAGER" => "N",
+        "DISPLAY_BOTTOM_PAGER" => "N",
+        "PAGER_TITLE" => "Новости",
+        "PAGER_SHOW_ALWAYS" => "Y",
+        "PAGER_TEMPLATE" => "",
+        "PAGER_DESC_NUMBERING" => "N",
+        "PAGER_DESC_NUMBERING_CACHE_TIME" => "36000",
+        "PAGER_SHOW_ALL" => "Y",
+        "PAGER_BASE_LINK_ENABLE" => "Y",
+        "SET_STATUS_404" => "N",
+        "SHOW_404" => "N",
+        "MESSAGE_404" => "",
+        "PAGER_BASE_LINK" => "",
+        "PAGER_PARAMS_NAME" => "arrPager",
+        "AJAX_OPTION_JUMP" => "N",
+        "AJAX_OPTION_STYLE" => "Y",
+        "AJAX_OPTION_HISTORY" => "N",
+        "AJAX_OPTION_ADDITIONAL" => ""
+    ]
+);
 
-<?
+$GLOBALS['sliderFilter'] = [
+    '!PROPERTY_IMAGES_VALUE' => false
+];
+$APPLICATION->IncludeComponent(
+    "bitrix:news.list",
+    "slider",
+    [
+        "DISPLAY_DATE" => "Y",
+        "DISPLAY_NAME" => "Y",
+        "DISPLAY_PICTURE" => "Y",
+        "DISPLAY_PREVIEW_TEXT" => "Y",
+        "AJAX_MODE" => "N",
+        "IBLOCK_TYPE" => "content",
+        "IBLOCK_ID" => IBLOCK_CONTENT_INFO,
+        "NEWS_COUNT" => "10",
+        "SORT_BY1" => "ACTIVE_DATE",
+        "SORT_ORDER1" => "DESC",
+        "SORT_BY2" => "SORT",
+        "SORT_ORDER2" => "ASC",
+        "FILTER_NAME" => "sliderFilter",
+        "FIELD_CODE" => Array("ID", "NAME", "PREVIEW_TEXT", "PREVIEW_PICTURE"),
+        "PROPERTY_CODE" => Array("IMAGES"),
+        "CHECK_DATES" => "N",
+        "DETAIL_URL" => "",
+        "PREVIEW_TRUNCATE_LEN" => "",
+        "ACTIVE_DATE_FORMAT" => "d.m.Y",
+        "SET_TITLE" => "N",
+        "SET_BROWSER_TITLE" => "N",
+        "SET_META_KEYWORDS" => "N",
+        "SET_META_DESCRIPTION" => "N",
+        "SET_LAST_MODIFIED" => "Y",
+        "INCLUDE_IBLOCK_INTO_CHAIN" => "N",
+        "ADD_SECTIONS_CHAIN" => "N",
+        "HIDE_LINK_WHEN_NO_DETAIL" => "Y",
+        "PARENT_SECTION" => "",
+        "PARENT_SECTION_CODE" => "about-sliders",
+        "INCLUDE_SUBSECTIONS" => "Y",
+        "CACHE_TYPE" => "A",
+        "CACHE_TIME" => "3600",
+        "CACHE_FILTER" => "Y",
+        "CACHE_GROUPS" => "Y",
+        "DISPLAY_TOP_PAGER" => "N",
+        "DISPLAY_BOTTOM_PAGER" => "N",
+        "PAGER_TITLE" => "Новости",
+        "PAGER_SHOW_ALWAYS" => "Y",
+        "PAGER_TEMPLATE" => "",
+        "PAGER_DESC_NUMBERING" => "N",
+        "PAGER_DESC_NUMBERING_CACHE_TIME" => "36000",
+        "PAGER_SHOW_ALL" => "Y",
+        "PAGER_BASE_LINK_ENABLE" => "Y",
+        "SET_STATUS_404" => "N",
+        "SHOW_404" => "N",
+        "MESSAGE_404" => "",
+        "PAGER_BASE_LINK" => "",
+        "PAGER_PARAMS_NAME" => "arrPager",
+        "AJAX_OPTION_JUMP" => "N",
+        "AJAX_OPTION_STYLE" => "Y",
+        "AJAX_OPTION_HISTORY" => "N",
+        "AJAX_OPTION_ADDITIONAL" => ""
+    ]
+);
+
 require($_SERVER['DOCUMENT_ROOT'].'/bitrix/footer.php');
-?>

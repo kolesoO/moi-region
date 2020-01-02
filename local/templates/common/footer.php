@@ -1,6 +1,6 @@
 <?if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();?>
 
-    <?if (!$isMainPage) :?>
+    <?if (!$isMainPage || !defined("NOT_CLOSE_SECTION_IN_FOOTER")) :?>
         </div></section>
     <?endif?>
     <footer class="footer bg-dark text-white pt-5 pb-5">
@@ -46,24 +46,13 @@
                         false
                     );?>
                 </div>
-                <div class="text-right col-lg-2 col-md-4 col-6">
+                <div class="text-right col-lg-4 col-md-4 col-6">
                     <?$APPLICATION->IncludeComponent(
                         "bitrix:main.include",
                         ".default",
                         [
                             "AREA_FILE_SHOW" => "file",
                             "PATH" => SITE_TEMPLATE_PATH . "/include/index/socials.php"
-                        ],
-                        false
-                    );?>
-                </div>
-                <div class="col-lg-2 col-md-2 col-12 mt-lg-0 mt-md-0 mt-4">
-                    <?$APPLICATION->IncludeComponent(
-                        "bitrix:main.include",
-                        ".default",
-                        [
-                            "AREA_FILE_SHOW" => "file",
-                            "PATH" => SITE_TEMPLATE_PATH . "/include/index/logo.php"
                         ],
                         false
                     );?>

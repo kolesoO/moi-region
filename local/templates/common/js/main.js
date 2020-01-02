@@ -35,3 +35,25 @@ $(document).ready(function() {
     }
     //end
 });
+
+//bitrix
+BX.ready(function() {
+    BX.showWait = function(a) {
+        BX.lastNode = a;
+        BX.addClass(BX(a), "loading")
+    };
+    BX.closeWait = function(a) {
+        if (!a) {
+            a = BX.lastNode
+        }
+        BX.removeClass(BX(a), "loading")
+    };
+    var ck = document.getElementById('popup-cookie');
+    if (!!ck) {
+        ck.classList.add('active');
+        var tm = new Date();
+        tm.setTime(tm.getTime() + (1 * 24 * 60 * 60 * 1000));
+        document.cookie = 'cookie_policy=true;expires=' + tm.toGMTString() + ';path=/'
+    }
+});
+//end

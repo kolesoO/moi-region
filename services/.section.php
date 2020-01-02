@@ -1,3 +1,0 @@
-<?
-$sSectionName = 'Услуги';
-$arDirProperties = array();

@@ -170,7 +170,7 @@ $rsAsset->addJs(SITE_TEMPLATE_PATH.'/js/main.js');
             <div class="container">
                 <div class="row align-items-center">
                     <div class="d-flex col-lg-5 col-md-3 col-5 align-items-center">
-                        <div class="col-lg-4 col-md-12 col-12 pl-0">
+                        <div class="col-lg-3 col-md-12 col-12 pl-0">
                             <?$APPLICATION->IncludeComponent(
                                 "bitrix:main.include",
                                 ".default",

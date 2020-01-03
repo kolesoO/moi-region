@@ -26,7 +26,7 @@ $wrapClass = $arResult["SECTIONS_COUNT"] > $arParams["LINE_ELEMENT_COUNT"] ? ' j
             <div id="<?=$this->GetEditAreaId($arResult['SECTION']['ID'])?>" class="col-lg-3 col-md-6 float-left">
                 <a
                         href="<?=$section['SECTION_PAGE_URL']?>"
-                        class="card card-img-top image-block h-custom-250 transform-wrap bg-dark text-white p-3"
+                        class="card card-img-top image-block h-custom-250 transform-wrap bg-dark text-white p-3 border-0"
                         style="background-image: url('<?=$section["PICTURE"]["SRC"]?>')"
                 >
                     <div class="card-img-overlay overflow-hidden">

@@ -18,6 +18,7 @@
 
 .gallery-block.compact-gallery .item .image{
     transition: 0.8s ease;
+    height: 270px;
 }
 
 .gallery-block.compact-gallery .item .info{

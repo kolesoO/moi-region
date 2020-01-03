@@ -18,7 +18,7 @@
             <div id="<?=$this->GetEditAreaId($arSection['ID'])?>" class="col-lg-3 col-md-6 col-xs-12 mb-4">
                 <a
                         href="<?=$arSection["SECTION_PAGE_URL"]?>"
-                        class="card card-img-top image-block h-custom-250 transform-wrap bg-dark text-white p-3"
+                        class="card card-img-top image-block h-custom-250 transform-wrap bg-dark text-white p-3 border-0"
                         style="background-image: url('<?=$arSection["PICTURE"]["SRC"]?>')"
                 >
                     <div class="card-img-overlay overflow-hidden">

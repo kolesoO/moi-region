@@ -7,10 +7,14 @@
     <div id="<?=$this->GetEditAreaId($arItem['ID']);?>" class="card-body bg-white border mb-3">
         <div class="h3 mb-4"><?=$arItem["NAME"]?></div>
         <div class="row">
-            <div class="col-lg-8"><?=htmlspecialcharsback($arItem['PREVIEW_TEXT'])?></div>
-            <div class="col-lg-4">
-                <img src="<?=$arItem["PREVIEW_PICTURE"]["SRC"]?>" alt="">
-            </div>
+            <?if (is_array($arItem["PREVIEW_PICTURE"])) :?>
+                <div class="col-lg-8"><?=htmlspecialcharsback($arItem['PREVIEW_TEXT'])?></div>
+                <div class="col-lg-4">
+                    <img src="<?=$arItem["PREVIEW_PICTURE"]["SRC"]?>" alt="">
+                </div>
+            <?else:?>
+                <div class="col-12"><?=htmlspecialcharsback($arItem['PREVIEW_TEXT'])?></div>
+            <?endif?>
         </div>
     </div>
 <?endforeach;?>

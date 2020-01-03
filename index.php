@@ -79,7 +79,7 @@ $rsAsset->addJs(SITE_TEMPLATE_PATH.'/libs/baguetteBox/1.10.0/baguetteBox.min.js'
                     ]
                 );?>
             </div>
-            <div class="col-lg-4 col-md-4 col-12 mt-lg-0 mt-md-0 mt-5">
+            <div class="col-lg-5 col-md-4 col-12 mt-lg-0 mt-md-0 mt-5">
                 <?$APPLICATION->IncludeComponent(
                     "bitrix:news.list",
                     "preview-icon",
@@ -386,7 +386,7 @@ $rsAsset->addJs(SITE_TEMPLATE_PATH.'/libs/baguetteBox/1.10.0/baguetteBox.min.js'
         );?>
     </div>
 </section>
-<section class="pt-5 pb-5">
+<!--section class="pt-5 pb-5">
     <div class="container">
         <div class="h2 mb-5">
             <?$APPLICATION->IncludeComponent(
@@ -463,7 +463,7 @@ $rsAsset->addJs(SITE_TEMPLATE_PATH.'/libs/baguetteBox/1.10.0/baguetteBox.min.js'
             ]
         );?>
     </div>
-</section>
+</section-->
 <section class="pt-5 pb-5">
     <div class="container">
         <div class="h2 mb-5">

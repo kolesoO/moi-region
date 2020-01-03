@@ -18,7 +18,6 @@ $arResult["ITEMS_COUNT"] = count($arResult["ITEMS"]);
 
 foreach ($arResult["ITEMS"] as &$arItem) {
     if (!is_array($arItem["PREVIEW_PICTURE"])) {
-        $arItem["PREVIEW_PICTURE"]["SRC"] = SITE_TEMPLATE_PATH . '/images/no-image.png';
         continue;
     }
     if ($hasResize) {

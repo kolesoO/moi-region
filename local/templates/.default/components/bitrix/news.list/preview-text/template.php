@@ -6,5 +6,5 @@
     $textClass = $key < $arResult["ITEMS_COUNT"] - 1 ? 'mb-5' : 'mb-0';
     ?>
     <div id="<?=$this->GetEditAreaId($arItem['ID']);?>" class="h3"><?=$arItem["NAME"]?></div>
-    <p class="<?=$textClass?>"><?=$arItem["PREVIEW_TEXT"]?></p>
+    <div class="<?=$textClass?>"><?=$arItem["PREVIEW_TEXT"]?></div>
 <?endforeach;?>

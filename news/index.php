@@ -120,7 +120,12 @@ $APPLICATION->IncludeComponent(
         "SHARE_TEMPLATE" => "",
         "SHARE_HANDLERS" => array("delicious", "facebook", "lj", "twitter"),
         "SHARE_SHORTEN_URL_LOGIN" => "",
-        "SHARE_SHORTEN_URL_KEY" => ""
+        "SHARE_SHORTEN_URL_KEY" => "",
+        "DETAIL_IMAGE_SIZE" => [
+            "WIDTH" => 1110,
+            "HEIGHT" => 700
+        ],
+        "LIST_IMAGE_SIZE" => ""
     ]
 );
 

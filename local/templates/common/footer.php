@@ -6,7 +6,7 @@
     <footer class="footer bg-dark text-white pt-5 pb-5">
         <div class="container">
             <div class="row">
-                <div class="col-lg-3 col-md-6 col-6">
+                <div class="col-lg-3 col-md-4 col-12">
                     <div class="h5">
                         <?$APPLICATION->IncludeComponent(
                             "bitrix:main.include",
@@ -35,24 +35,48 @@
                         )
                     );?>
                 </div>
-                <div class="col-lg-5 d-lg-block d-none">
+                <div class="col-lg-3 d-lg-block d-none">
+                    <h5>
+                        <?$APPLICATION->IncludeComponent(
+                            "bitrix:main.include",
+                            ".default",
+                            [
+                                "AREA_FILE_SHOW" => "file",
+                                "PATH" => SITE_TEMPLATE_PATH . "/include/index/catalog_sections-title.php"
+                            ],
+                            false
+                        );?>
+                    </h5>
+                    <?$APPLICATION->IncludeComponent(
+                        "bitrix:catalog.section.list",
+                        "footer",
+                        [
+                            "VIEW_MODE" => "TEXT",
+                            "SHOW_PARENT_NAME" => "Y",
+                            "IBLOCK_TYPE" => "1c_catalog",
+                            "IBLOCK_ID" => IBLOCK_1C_CATALOG_CATALOG,
+                            "SECTION_ID" => "",
+                            "SECTION_CODE" => "",
+                            "SECTION_URL" => "",
+                            "COUNT_ELEMENTS" => "N",
+                            "TOP_DEPTH" => "1",
+                            "SECTION_FIELDS" => "",
+                            "SECTION_USER_FIELDS" => "",
+                            "ADD_SECTIONS_CHAIN" => "N",
+                            "CACHE_TYPE" => "A",
+                            "CACHE_TIME" => "36000000",
+                            "CACHE_NOTES" => "",
+                            "CACHE_GROUPS" => "Y"
+                        ]
+                    );?>
+                </div>
+                <div class="col-lg-6 col-md-8 col-12 mt-5 mt-lg-0 mt-md-0">
                     <?$APPLICATION->IncludeComponent(
                         "bitrix:main.include",
                         ".default",
                         [
                             "AREA_FILE_SHOW" => "file",
                             "PATH" => SITE_TEMPLATE_PATH . "/include/footer/info.php"
-                        ],
-                        false
-                    );?>
-                </div>
-                <div class="text-right col-lg-4 col-md-4 col-6">
-                    <?$APPLICATION->IncludeComponent(
-                        "bitrix:main.include",
-                        ".default",
-                        [
-                            "AREA_FILE_SHOW" => "file",
-                            "PATH" => SITE_TEMPLATE_PATH . "/include/index/socials.php"
                         ],
                         false
                     );?>

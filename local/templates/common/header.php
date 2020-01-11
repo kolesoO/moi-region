@@ -23,6 +23,7 @@ $rsAsset->addJs(SITE_TEMPLATE_PATH.'/libs/bootstrap-4.3.1-dist/js/bootstrap.min.
 $rsAsset->addJs(SITE_TEMPLATE_PATH.'/libs/fontawesome-free-5.11.2-web/js/all.min.js');
 $rsAsset->addJs(SITE_TEMPLATE_PATH.'/libs/slick-1.6.0/slick-1.6.0.min.js');
 $rsAsset->addJs(SITE_TEMPLATE_PATH.'/js/modules/slider/script.js');
+$rsAsset->addJs(SITE_TEMPLATE_PATH.'/js/ajax.js');
 $rsAsset->addJs(SITE_TEMPLATE_PATH.'/js/main.js');
 //end
 ?>
@@ -78,14 +79,14 @@ $rsAsset->addJs(SITE_TEMPLATE_PATH.'/js/main.js');
     <div class="header sticky-top bg-success text-white pt-3 pb-3 shadow">
         <div class="container">
             <div class="row align-items-center">
-                <div class="d-flex col-lg-6 col-md-10 col-10">
+                <div class="d-flex align-items-center col-lg-6 col-md-10 col-10">
                     <?$APPLICATION->IncludeComponent(
                         "bitrix:sale.basket.basket.line",
                         "",
                         [
                             "HIDE_ON_BASKET_PAGES" => "Y",
-                            "PATH_TO_BASKET" => SITE_DIR."checkout/",
-                            "PATH_TO_ORDER" => SITE_DIR."checkout/",
+                            "PATH_TO_BASKET" => SITE_DIR."basket/",
+                            "PATH_TO_ORDER" => SITE_DIR."order/",
                             "PATH_TO_PERSONAL" => SITE_DIR."personal/",
                             "PATH_TO_PROFILE" => SITE_DIR."personal/",
                             "PATH_TO_REGISTER" => SITE_DIR."login/",
@@ -169,8 +170,8 @@ $rsAsset->addJs(SITE_TEMPLATE_PATH.'/js/main.js');
         <div class="pt-3 pb-3">
             <div class="container">
                 <div class="row align-items-center">
-                    <div class="d-flex col-lg-5 col-md-3 col-5 align-items-center">
-                        <div class="col-lg-3 col-md-12 col-12 pl-0">
+                    <div class="d-flex col-lg-9 col-md-7 col-12 align-items-center">
+                        <div class="col-lg-2 col-md-3 col-3 pl-0">
                             <?$APPLICATION->IncludeComponent(
                                 "bitrix:main.include",
                                 ".default",
@@ -181,7 +182,7 @@ $rsAsset->addJs(SITE_TEMPLATE_PATH.'/js/main.js');
                                 false
                             );?>
                         </div>
-                        <div class="lead col-lg-8 d-none d-lg-block">
+                        <div class="lead col-lg-6 col-md-8 col-9">
                             <span>
                                 <?$APPLICATION->IncludeComponent(
                                     "bitrix:main.include",
@@ -195,18 +196,7 @@ $rsAsset->addJs(SITE_TEMPLATE_PATH.'/js/main.js');
                             </span>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-4 col-7 text-right">
-                        <?$APPLICATION->IncludeComponent(
-                            "bitrix:main.include",
-                            ".default",
-                            [
-                                "AREA_FILE_SHOW" => "file",
-                                "PATH" => SITE_TEMPLATE_PATH . "/include/index/socials.php"
-                            ],
-                            false
-                        );?>
-                    </div>
-                    <div class="col-lg-3 col-md-5 col-12 mt-lg-0 mt-md-0 mt-2">
+                    <div class="col-lg-3 col-md-5 col-12 mt-lg-0 mt-md-0 mt-3">
                         <div class="alert alert-secondary mb-0">
                             <?$APPLICATION->IncludeComponent(
                                 "bitrix:main.include",

@@ -10,6 +10,9 @@ $rsAsset->addCss(SITE_TEMPLATE_PATH.'/libs/baguetteBox/1.10.0/baguetteBox.min.cs
 $rsAsset->addCss(SITE_TEMPLATE_PATH.'/css/gallery.css');
 $rsAsset->addJs(SITE_TEMPLATE_PATH.'/libs/baguetteBox/1.10.0/baguetteBox.min.js');
 
+$GLOBALS['galleryFilter'] = [
+    '!PREVIEW_PICTURE' => false
+];
 $APPLICATION->IncludeComponent(
     "bitrix:news.list",
     'gallery',
@@ -26,7 +29,7 @@ $APPLICATION->IncludeComponent(
         "SORT_ORDER1" => "DESC",
         "SORT_BY2" => "SORT",
         "SORT_ORDER2" => "ASC",
-        "FILTER_NAME" => "",
+        "FILTER_NAME" => "galleryFilter",
         "FIELD_CODE" => Array("ID", "NAME", "PREVIEW_TEXT", "CODE"),
         "PROPERTY_CODE" => Array(),
         "CHECK_DATES" => "N",
@@ -65,7 +68,15 @@ $APPLICATION->IncludeComponent(
         "AJAX_OPTION_JUMP" => "N",
         "AJAX_OPTION_STYLE" => "Y",
         "AJAX_OPTION_HISTORY" => "N",
-        "AJAX_OPTION_ADDITIONAL" => ""
+        "AJAX_OPTION_ADDITIONAL" => "",
+        "PREVIEW_IMAGE_SIZE" => [
+            "WIDTH" => 400,
+            "HEIGHT" => 400
+        ],
+        "DETAIL_IMAGE_SIZE" => [
+            "WIDTH" => 1110,
+            "HEIGHT" => 700
+        ]
     ]
 );
 

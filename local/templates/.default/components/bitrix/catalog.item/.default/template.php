@@ -39,7 +39,7 @@ if ($arParams['DISPLAY_COMPARE']) {
         <?if (isset($arPrice) && $arPrice['CAN_BUY'] == 'Y') :?>
             <div class="text-right">
                 <?if ($arPrice['DISCOUNT'] > 0) :?>
-                    <s class="text-secondary mr-2"><?=$arPrice['PRINT_PRICE']?></s>
+                    <s class="text-secondary mr-2"><?=$arPrice['PRINT_BASE_PRICE']?></s>
                 <?endif?>
                 <a
                         href="#"
@@ -47,7 +47,7 @@ if ($arParams['DISPLAY_COMPARE']) {
                         onclick="obAjax.addToBasket('<?=$arResult["OFFER"]["ID"]?>', '<?=$arPrice["PRICE_TYPE_ID"]?>', event)"
                 >
                     <i class="fas fa-cart-arrow-down"></i>
-                    <span><?=$arPrice["PRINT_BASE_PRICE"]?></span>
+                    <span><?=$arPrice["PRINT_PRICE"]?></span>
                 </a>
             </div>
         <?endif?>

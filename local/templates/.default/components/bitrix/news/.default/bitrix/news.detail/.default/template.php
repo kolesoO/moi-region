@@ -10,10 +10,13 @@
 /** @var string $templateFolder */
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
+
 $this->setFrameMode(true);
 ?>
 
-<div class="mb-3 text-center">
-    <img src="<?=$arResult['DETAIL_PICTURE']['SRC']?>" alt="">
-</div>
+<?if (is_array($arResult['DETAIL_PICTURE'])) :?>
+    <div class="mb-3 text-center">
+        <img src="<?=$arResult['DETAIL_PICTURE']['SRC']?>" alt="">
+    </div>
+<?endif?>
 <div class="card-body bg-white border"><?=$arResult["DETAIL_TEXT"]?></div>

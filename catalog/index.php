@@ -240,12 +240,12 @@ $APPLICATION->IncludeComponent(
             "compare" => "/compare/"
         ],
         "IMAGE_SIZE" => [
-            "WIDTH" => "",
-            "HEIGHT" => ""
+            "WIDTH" => 300,
+            "HEIGHT" => 300
         ],
         "DETAIL_IMAGE_SIZE" => [
-            "WIDTH" => "",
-            "HEIGHT" => ""
+            "WIDTH" => 635,
+            "HEIGHT" => 635
         ],
         "DEVICE_TYPE" => DEVICE_TYPE,
         "INSTANT_RELOAD" => true

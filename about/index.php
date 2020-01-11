@@ -65,7 +65,11 @@ $APPLICATION->IncludeComponent(
         "AJAX_OPTION_JUMP" => "N",
         "AJAX_OPTION_STYLE" => "Y",
         "AJAX_OPTION_HISTORY" => "N",
-        "AJAX_OPTION_ADDITIONAL" => ""
+        "AJAX_OPTION_ADDITIONAL" => "",
+        "IMAGE_SIZE" => [
+            "WIDTH" => 400,
+            "HEIGHT" => 400
+        ]
     ]
 );
 
@@ -127,7 +131,11 @@ $APPLICATION->IncludeComponent(
         "AJAX_OPTION_JUMP" => "N",
         "AJAX_OPTION_STYLE" => "Y",
         "AJAX_OPTION_HISTORY" => "N",
-        "AJAX_OPTION_ADDITIONAL" => ""
+        "AJAX_OPTION_ADDITIONAL" => "",
+        "IMAGE_SIZE" => [
+            "WIDTH" => 1110,
+            "HEIGHT" => 700
+        ]
     ]
 );
 

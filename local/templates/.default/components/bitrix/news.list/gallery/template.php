@@ -14,7 +14,7 @@
                     >
                         <div
                                 class="image-block image"
-                                style="background-image: url('<?=$arItem["PREVIEW_PICTURE"]["SRC"]?>')"
+                                style="background-image: url('<?=$arItem["PREVIEW_PICTURE"]["THUMB"]?>')"
                         ></div>
                         <span class="description">
                             <span class="description-heading"><?=$arItem["NAME"]?></span>

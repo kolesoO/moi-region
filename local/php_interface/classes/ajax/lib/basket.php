@@ -6,19 +6,6 @@ class Basket
     use MsgHandBook;
 
     /**
-     * @param array $arProp
-     * @return array
-     */
-    private static function getBasketProperty(array $arProp)
-    {
-        return [
-            "NAME" => $arProp["NAME"],
-            "CODE" => $arProp["CODE"],
-            "VALUE" => $arProp["VALUE"]
-        ];
-    }
-
-    /**
      * @param array $arParams
      * @return array
      * @throws \Bitrix\Main\LoaderException
@@ -31,18 +18,19 @@ class Basket
         if (is_array($arParams["offer_id"]) && count($arParams["offer_id"]) > 0) {
             if (isset($arParams["price_id"]) && strlen($arParams["price_id"]) > 0) {
                 if (\Bitrix\Main\Loader::includeModule("sale")) {
-                    $arParams["qnt"] = intval($arParams["qnt"]);
+
                     //qnt
+                    $arParams["qnt"] = intval($arParams["qnt"]);
                     if ($arParams["qnt"] == 0) {
-                        $arParams["qnt"] = count($arParams["offer_id"]);
+                        $arParams["qnt"] = 1;
                     }
                     //end
+
                     $rsItem = \CIBlockElement::GetList(
                         [],
                         [
-                            "IBLOCK_ID" => IBLOCK_CATALOG_CATALOGSKU,
+                            "IBLOCK_ID" => IBLOCK_1C_CATALOG_CATALOG,
                             "ID" => $arParams["offer_id"],
-                            //"!CATALOG_STORE_AMOUNT_".STORE_ID => false
                         ],
                         false,
                         false,
@@ -117,5 +105,21 @@ class Basket
         }
 
         return $arReturn;
+    }
+
+    /**
+     * @return array
+     */
+    public static function clear()
+    {
+        $resultFlag = false;
+        if (\Bitrix\Main\Loader::includeModule("sale")) {
+            $resultFlag = \CSaleBasket::DeleteAll(\CSaleBasket::GetBasketUserID());
+        }
+
+        return [
+            'result' => $resultFlag,
+            'js_callback' => 'clearBasketCallBack'
+        ];
     }
 }

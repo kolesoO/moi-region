@@ -49,7 +49,7 @@ if ($arParams['DISPLAY_COMPARE']) {
             <?foreach ($arResult["PROPERTIES"]["MORE_PHOTO"]["VALUE"] as $filePath) :?>
                 <div
                         class="image-block h-custom-300 float-left"
-                        style="background-image: url('<?=$filePath?>>')"
+                        style="background-image: url('<?=$filePath?>')"
                 ></div>
             <?endforeach;?>
         </div>

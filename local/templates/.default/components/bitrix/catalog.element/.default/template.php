@@ -43,12 +43,12 @@ if ($arParams['DISPLAY_COMPARE']) {
                 data-prevArrow="<a href='#' class='arrow-right text-success'><i class='fas fa-arrow-left'></i></a>"
         >
             <div
-                    class="image-block h-custom-300 float-left"
+                    class="image-block contain h-custom-300 float-left"
                     style="background-image: url('<?=$arResult['DETAIL_PICTURE']["SRC"]?>')"
             ></div>
             <?foreach ($arResult["PROPERTIES"]["MORE_PHOTO"]["VALUE"] as $filePath) :?>
                 <div
-                        class="image-block h-custom-300 float-left"
+                        class="image-block contain h-custom-300 float-left"
                         style="background-image: url('<?=$filePath?>')"
                 ></div>
             <?endforeach;?>
@@ -57,7 +57,7 @@ if ($arParams['DISPLAY_COMPARE']) {
     <div class="col-lg-5 col-md-5 col-12 mt-lg-0 mt-md-0 mt-3">
         <div class="card-body bg-white border">
             <?if (strlen($arResult['DETAIL_TEXT']) > 0) :?>
-                <div class="card-body bg-primary border-left border-danger mb-4"><?=htmlspecialcharsback($arResult['DETAIL_TEXT'])?></div>
+                <div class="card-body bg-success text-white mb-4"><?=htmlspecialcharsback($arResult['DETAIL_TEXT'])?></div>
             <?endif?>
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-8">

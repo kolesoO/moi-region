@@ -1,11 +1,11 @@
 ymaps.ready(function(){
     let map = new obMap({
             mapId: "map",
-            mapCenter: [52.62885564, 39.5280958],
+            mapCenter: [59.92433655, 30.48690006],
             mapZoom: 17
         }),
         MyBalloonLayout = ymaps.templateLayoutFactory.createClass(
-            '<div style="width:270px;height:136px;margin-left:-185px;margin-top:-136px"><img src="/local/templates/common/images/logo-on-map.png"></div>',
+            '<div style="width:270px;height:136px;margin-left:-185px;margin-top:-136px;text-align:center" class="card-body bg-white"><img src="/local/templates/common/images/logo.png" style="max-height: 100%"></div>',
             {
                 build: function () {
                     this.constructor.superclass.build.call(this);
@@ -41,11 +41,11 @@ ymaps.ready(function(){
         );
     map.setMarkerInfo([
         {
-            coords: [52.62885564, 39.5280958]
+            coords: [59.92433655, 30.48690006]
         }
     ]);
     map.setPlacemarkProperties({
-        'iconCaption': 'Лебедянское шоссе, 1Б'
+        'iconCaption': 'ул. Коллонтай д. 32.к1 кв 38'
     });
     map.setPlacemarkOptions({
         'preset': 'islands#blueCircleDotIconWithCaption',

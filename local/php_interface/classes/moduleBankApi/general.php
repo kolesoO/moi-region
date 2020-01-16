@@ -87,7 +87,8 @@ class General
     protected function getSystemParams(): array
     {
         return [
-            'testing' => intval($this->testMode),
+            'merchant' => $this->merchantId,
+            'testing' => $this->testMode,
             'unix_timestamp' => time()
         ];
     }
@@ -104,7 +105,7 @@ class General
         var_dumP($params);
 
         $test = $this->client
-            ->post('/pay', $params)
+            ->request('post', '/pay', $params)
             ->getBody()
             ->getContents();
 

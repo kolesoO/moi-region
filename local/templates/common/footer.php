@@ -1,4 +1,7 @@
-<?if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();?>
+<?if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
+
+/**@global $USER **/
+?>
 
     <?if (!$isMainPage || !defined("NOT_CLOSE_SECTION_IN_FOOTER")) :?>
         </div></section>
@@ -84,5 +87,10 @@
             </div>
         </div>
     </footer>
+    <?$APPLICATION->IncludeComponent(
+        "kDevelop:blank",
+        "auth-reg",
+        []
+    );?>
 </body>
 </html>

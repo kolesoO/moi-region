@@ -108,12 +108,12 @@ $rsAsset->addJs(SITE_TEMPLATE_PATH.'/js/main.js');
                     );?>
                     <div class="pr-4">
                         <?if ($USER->IsAuthorized()) :?>
-                            <a href="#" class="text-white text-decoration-none">
+                            <a href="#" class="text-white text-decoration-none" data-toggle="modal" data-target="#auth-reg-form">
                                 <i class="fas fa-user-cog"></i>
                                 <span class="d-none d-lg-inline d-md-inline">Личный кабинет</span>
                             </a>
                         <?else:?>
-                            <a href="#" class="text-white text-decoration-none">
+                            <a href="#" class="text-white text-decoration-none" data-toggle="modal" data-target="#auth-reg-form">
                                 <i class="fas fa-user-cog"></i>
                                 <span class="d-none d-lg-inline d-md-inline">Личный кабинет</span>
                             </a>

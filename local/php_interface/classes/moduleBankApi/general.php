@@ -57,10 +57,10 @@ class General
     {
         $keys = array_keys($params);
         sort($keys);
-        $chunks = [];
+        $chunks = array();
         foreach ($keys as $k) {
             $v = (string) $params[$k];
-            if (($v !== '') && ($k != $key)) {
+            if (($v !== '') && ($k != 'signature')) {
                 $chunks[] = $k . '=' . base64_encode($v);
             }
         }
@@ -69,15 +69,15 @@ class General
     }
 
     /**
-     * @param string $params
+     * @param string $data
      * @return string
      */
-    protected function doubleSha1(string $params): string
+    protected function doubleSha1(string $data): string
     {
-        $data = '';
         for ($i = 0; $i < 2; $i++) {
-            $data = sha1($this->secretKey . $params);
+            $data = sha1($this->secretKey . $data);
         }
+
         return $data;
     }
 

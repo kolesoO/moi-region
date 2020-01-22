@@ -25,24 +25,7 @@ if (strpos($APPLICATION->GetCurDir(), "/bitrix/admin") === false) {
     $rsManager->addEventHandler("main", "OnProlog", ["\kDevelop\Settings\Store", "setStore"], false, 200);
     $rsManager->addEventHandler("main", "OnProlog", ["\kDevelop\Help\Tools", "defineAjax"], false, 300);
     //end
-    \kDevelop\Help\Tools::definders();
-} else {
-    //iblock module
 
-    //end
+    \kDevelop\Help\Tools::definders();
 }
 //end
-
-/*$test = new \kDevelop\ModuleBankApi\General(
-    '1cc17aa0-bbc4-4768-b1bc-2f94b68c4b98',
-    'B827F16F8E038F41057B5DA1E319DEA3',
-    true
-);
-$test->createPayment([
-    'amount' => 10,
-    'order_id' => '123',
-    'description' => 'test order',
-    'success_url' => 'https://moi-region.ru/',
-    'fail_url' => 'https://moi-region.ru/?fail=true',
-]);
-die();*/

@@ -161,6 +161,47 @@ var obAjax = {
 
     /**
      *
+     * @param form
+     * @param evt
+     */
+    userRegister: function(form, evt)
+    {
+        evt.preventDefault();
+
+        var ctx = this;
+        ctx.params.target_id = form.id;
+        ctx.doRequest(
+            "POST",
+            location.href,
+            ctx.serializeData({
+                class: "User",
+                method: "userRegister",
+                params: ctx.getFormObject(form)
+            }),
+            [
+                ["Content-type", "application/x-www-form-urlencoded"]
+            ]
+        );
+    },
+
+    /**
+     *
+     * @param data
+     */
+    userRegisterCallBack: function(data)
+    {
+        if (!!data.error_msg) {
+            var errorBlock = document.querySelector("#" + this.params.target_id + " .error_txt");
+            if (!!errorBlock) {
+                errorBlock.innerHTML = data.error_msg.join("<br>");
+            }
+        } else if (data.USER_ID > 0) {
+            location.reload();
+        }
+    },
+
+    /**
+     *
      * @param method
      * @param url
      * @param sendData

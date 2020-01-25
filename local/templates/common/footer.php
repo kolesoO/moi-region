@@ -87,10 +87,14 @@
             </div>
         </div>
     </footer>
-    <?$APPLICATION->IncludeComponent(
-        "kDevelop:blank",
-        "auth-reg",
-        []
-    );?>
+    <?
+    if (!$USER->IsAuthorized()) {
+        $APPLICATION->IncludeComponent(
+            "kDevelop:blank",
+            "auth-reg",
+            []
+        );
+    }
+    ?>
 </body>
 </html>

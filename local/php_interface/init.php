@@ -3,7 +3,7 @@
  * @global $APPLICATION
  */
 
-use \Bitrix\Main;
+use Bitrix\Main;
 
 $rsManager = Main\EventManager::getInstance();
 
@@ -14,7 +14,7 @@ Main\Loader::registerAutoLoadClasses(null, [
     "\kDevelop\Help\Mobile_Detect" => "/local/php_interface/classes/help/mobile_detect.php",
     "\kDevelop\Help\Tools" => "/local/php_interface/classes/help/tools.php",
     "\kDevelop\Settings\Store" => "/local/php_interface/classes/settings/store.php",
-    "\kDevelop\ModuleBankApi\General" => "/local/php_interface/classes/moduleBankApi/general.php",
+    "\kDevelop\Service\Order" => "/local/php_interface/classes/service/order.php",
 ]);
 //end
 
@@ -28,4 +28,6 @@ if (strpos($APPLICATION->GetCurDir(), "/bitrix/admin") === false) {
 
     \kDevelop\Help\Tools::definders();
 }
+
+$rsManager->addEventHandler("sale", "OnOrderUpdate", ["\kDevelop\Service\Order", "OnOrderUpdateHandler"], false, 300);
 //end

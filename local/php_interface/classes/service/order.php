@@ -12,6 +12,7 @@ class Order
     /**
      * @param $id
      * @param $arFields
+     * @throws \Bitrix\Main\ArgumentException
      * @throws \Bitrix\Main\ArgumentNullException
      * @throws \Bitrix\Main\ArgumentOutOfRangeException
      * @throws \Bitrix\Main\NotImplementedException
@@ -54,6 +55,7 @@ class Order
                 }
             }
             $order->setField('STATUS_ID', 'P');
+            $order->save();
         }
     }
 }

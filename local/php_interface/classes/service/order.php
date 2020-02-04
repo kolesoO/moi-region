@@ -19,10 +19,6 @@ class Order
      */
     public static function OnOrderUpdateHandler($id, $arFields)
     {
-        global $USER;
-
-        if ($USER->GetID() != $arFields['USER_ID']) return;
-
         $order = \Bitrix\Sale\Order::load($id);
         if (!$order) return;
 

@@ -7,6 +7,9 @@ namespace kDevelop\Service;
 use Bitrix\Sale\Payment;
 use Bitrix\Sale\PaySystem\Service;
 
+/**
+ * Class Order
+ */
 class Order
 {
     /**
@@ -40,18 +43,30 @@ class Order
         /** @var Service $resultPaySystem */
         /** @var Payment $resultPayment */
 
-        if ($order->getField('STATUS_ID') == 'S') {
-            if ($order->getPrice() < $resultPayment->getField('SUM')) {
+        if ($order->getField('STATUS_ID') == 'C') {
+            if ($resultPayment->getSumPaid() > 0) {
                 try {
-                    $resultPaySystem->refund(
-                        $resultPayment,
-                        ($resultPayment->getField('SUM') - $order->getPrice())
-                    );
+                    AddMessage2Log([
+                        'action' => 'Try to refund order sum',
+                        'order_id' => $order->getId(),
+                        'order_sum' => $order->getPrice(),
+                        'refund_sum' => $resultPayment->getSumPaid()
+                    ]);
+                    $resultPaySystem->refund($resultPayment, $resultPayment->getSumPaid());
                 } catch (\Throwable $ex) {
+                    AddMessage2Log($ex->getMessage());
                 }
             }
-            $order->setField('STATUS_ID', 'P');
+            $order->setField('CANCELED', 'Y');
             $order->save();
+        } elseif ($order->getField('STATUS_ID') == 'S') {
+            \CEvent::sendImmediate(
+                'CREATE_PAYMENT_FOR_ORDER',
+                SITE_ID,
+                [
+                    'ORDER_ID' => $order->getId()
+                ]
+            );
         }
     }
 }

@@ -91,7 +91,7 @@
     if (!$USER->IsAuthorized()) {
         $APPLICATION->IncludeComponent(
             "kDevelop:blank",
-            "auth-reg",
+            "auth-reg-password",
             []
         );
     }

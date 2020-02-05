@@ -1,11 +1,12 @@
-<?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
-
-if ($arResult['SHOW_ERRORS'] == 'Y' && $arResult['ERROR'])
-    ShowMessage($arResult['ERROR_MESSAGE']);
-?>
+<?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
 
 <form name="system_auth_form<?=$arResult["RND"]?>" method="post" action="<?=$arResult["AUTH_URL"]?>">
     <div class="modal-body">
+        <?
+        if ($arResult['SHOW_ERRORS'] == 'Y' && $arResult['ERROR']) {
+            ShowMessage($arResult['ERROR_MESSAGE']);
+        }
+        ?>
         <?if($arResult["BACKURL"] <> ''):?>
             <input type="hidden" name="backurl" value="<?=$arResult["BACKURL"]?>" />
         <?endif?>

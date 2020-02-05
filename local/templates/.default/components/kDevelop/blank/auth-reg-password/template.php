@@ -23,6 +23,16 @@
                     >
                         <span>Вход</span>
                     </a>
+                    <a
+                        href="#forgot-pass"
+                        class="text-decoration-none text-success ml-3"
+                        data-toggle="collapse"
+                        role="button"
+                        aria-expanded="false"
+                        aria-controls="collapseExample"
+                    >
+                        <span>Забыли пароль?</span>
+                    </a>
                 </div>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -57,6 +67,13 @@
                         "PROFILE_URL" => "#",
                         "SHOW_ERRORS" => "Y"
                     )
+                );?>
+            </div>
+            <div id="forgot-pass" data-parent="#accordion" class="collapse">
+                <?$APPLICATION->IncludeComponent(
+                    "bitrix:system.auth.forgotpasswd",
+                    "",
+                    Array()
                 );?>
             </div>
         </div>

@@ -58,6 +58,6 @@ ShowMessage($arParams["~AUTH_RESULT"]);
                     required
             >
         </div>
-        <button type="submit" name="change_pwd" class="btn btn-success"><?=GetMessage("AUTH_CHANGE")?></button>
+        <input type="submit" name="change_pwd" class="btn btn-success" value="<?=GetMessage("AUTH_CHANGE")?>">
     </form>
 <?endif?>

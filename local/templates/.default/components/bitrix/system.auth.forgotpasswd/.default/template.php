@@ -9,12 +9,12 @@
         <input type="hidden" name="AUTH_FORM" value="Y">
         <input type="hidden" name="TYPE" value="SEND_PWD">
         <div class="form-group">
-            <label for="email3"><?=GetMessage("sys_forgot_pass_login1")?></label>
-            <input id="email3" type="email" name="USER_LOGIN" class="form-control" required value="<?=$arResult["LAST_LOGIN"]?>">
+            <label for="email1"><?=GetMessage("sys_forgot_pass_login1")?></label>
+            <input id="email1" type="email" name="USER_LOGIN" class="form-control" required value="<?=$arResult["LAST_LOGIN"]?>">
         </div>
         <div class="form-group"><?=GetMessage("sys_forgot_pass_note_email")?></div>
     </div>
     <div class="modal-footer">
-        <button type="submit" name="send_account_info" class="btn btn-success"><?=GetMessage("AUTH_SEND")?></button>
+        <input type="submit" name="send_account_info" class="btn btn-success" value="<?=GetMessage("AUTH_SEND")?>">
     </div>
 </form>

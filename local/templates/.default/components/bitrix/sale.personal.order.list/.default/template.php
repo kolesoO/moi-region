@@ -44,7 +44,7 @@ else
                 ?>
                 <div class="card card-body shadow mb-3">
                     <div class="mb-2 d-flex justify-content-between align-content-center">
-                        <div class="h4 mb-0">Заказ №<?=$order['ORDER']['ACCOUNT_NUMBER']?></div>
+                        <a href="/order/?ORDER_ID=<?=$order['ORDER']['ACCOUNT_NUMBER']?>" class="h4 mb-0 text-success text-decoration-none">Заказ №<?=$order['ORDER']['ACCOUNT_NUMBER']?></a>
                         <a href="<?=htmlspecialcharsbx($order["ORDER"]["URL_TO_COPY"])?>" class="text-success text-decoration-none">
                             <i class="fas fa-clone"></i>
                             <span>Повторить заказ</span>

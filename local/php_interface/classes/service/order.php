@@ -52,7 +52,7 @@ class Order
                         'order_sum' => $order->getPrice(),
                         'refund_sum' => $resultPayment->getSumPaid()
                     ]);
-                    $resultPaySystem->refund($resultPayment, $resultPayment->getSumPaid());
+                    $resultPaySystem->refund($resultPayment);
                 } catch (\Throwable $ex) {
                     AddMessage2Log($ex->getMessage());
                 }

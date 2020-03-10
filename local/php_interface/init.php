@@ -29,7 +29,8 @@ if (strpos($APPLICATION->GetCurDir(), "/bitrix/admin") === false) {
     $rsManager->addEventHandler("main", "OnProlog", [Tools::class, "setDeviceType"], false, 100);
     $rsManager->addEventHandler("main", "OnProlog", [Store::class, "setStore"], false, 200);
     $rsManager->addEventHandler("main", "OnProlog", [Tools::class, "defineAjax"], false, 300);
-    $rsManager->addEventHandler("main", "OnBeforeUserAdd", [User::class, "OnBeforeUserAddHandler"], false, 300);
+    $rsManager->addEventHandler("main", "OnBeforeUserAdd", [User::class, "OnBeforeUserAddHandler"], false, 100);
+    $rsManager->addEventHandler("main", "OnSendUserInfo", [User::class, "OnSendUserInfoHandler"], false, 100);
     //end
 
     //module sale

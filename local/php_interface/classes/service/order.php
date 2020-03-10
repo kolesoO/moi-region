@@ -106,7 +106,7 @@ class Order
                     "DISALLOW_CANCEL" => "Y"
                 ]
             );
-            $orderList = ob_end_clean();
+            $orderList = ob_get_clean();
 
             $propertyCollection = $order->getPropertyCollection();
 

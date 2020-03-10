@@ -37,6 +37,8 @@ class Order
      */
     public static function OnOrderUpdateHandler($id, $arFields)
     {
+        global $APPLICATION;
+
         $order = \Bitrix\Sale\Order::load($id);
         if (!$order) return;
 
@@ -75,11 +77,46 @@ class Order
             $order->setField('CANCELED', 'Y');
             $order->save();
         } elseif ($order->getField('STATUS_ID') == 'S') {
+            ob_start();
+            $APPLICATION->IncludeComponent(
+                "bitrix:sale.personal.order.detail.mail",
+                "",
+                [
+                    "ID" => $order->getId(),
+                    "SHOW_ORDER_BASKET" => "Y",
+                    "SHOW_ORDER_BASE" => "Y",
+                    "SHOW_ORDER_USER" => "Y",
+                    "SHOW_ORDER_PARAMS" => "Y",
+                    "SHOW_ORDER_BUYER" => "Y",
+                    "SHOW_ORDER_DELIVERY" => "Y",
+                    "SHOW_ORDER_PAYMENT" => "Y",
+                    "SHOW_ORDER_SUM" => "Y",
+                    "CUSTOM_SELECT_PROPS" => array("NAME", "DISCOUNT_PRICE_PERCENT_FORMATED", "PRICE_FORMATED", "QUANTITY"),
+                    "PROP_1" => array(),
+                    "PROP_2" => array(),
+                    "ACTIVE_DATE_FORMAT" => "d.m.Y",
+                    "PICTURE_WIDTH" => "110",
+                    "PICTURE_HEIGHT" => "110",
+                    "PICTURE_RESAMPLE_TYPE" => "1",
+                    "CACHE_TYPE" => "A",
+                    "CACHE_TIME" => "3600",
+                    "PATH_TO_LIST" => "",
+                    "PATH_TO_CANCEL" => "",
+                    "PATH_TO_PAYMENT" => "",
+                    "DISALLOW_CANCEL" => "Y"
+                ]
+            );
+            $orderList = ob_end_clean();
+
+            $propertyCollection = $order->getPropertyCollection();
+
             \CEvent::sendImmediate(
                 'CREATE_PAYMENT_FOR_ORDER',
                 SITE_ID,
                 [
-                    'ORDER_ID' => $order->getId()
+                    'ORDER_ID' => $order->getId(),
+                    'ORDER_LIST' => $orderList,
+                    'EMAIL' => $propertyCollection->getUserEmail() ?? '',
                 ]
             );
         }

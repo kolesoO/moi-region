@@ -65,7 +65,7 @@ $MESS["STOF_ENTER"] = "Войти";
 $MESS["STOF_REGISTER"] = "Регистрация";
 $MESS["STOF_DO_AUTHORIZE"] = "Авторизоваться";
 $MESS["STOF_DO_REGISTER"] = "Зарегистрироваться";
-$MESS["STOF_AUTH_REQUEST"] = "Пожалуйста, авторизуйтесь в личном кабинете";
+$MESS["STOF_AUTH_REQUEST"] = "Пожалуйста, <a href='#' class='text-success' data-toggle='modal' data-target='#auth-reg-form'>авторизуйтесь</a> в личном кабинете";
 $MESS["STOF_REG_REQUEST"] = "Пожалуйста, зарегистрируйтесь";
 $MESS["STOF_REG_HINT"] = "Если вы впервые на сайте, и хотите, чтобы мы вас помнили, и все ваши заказы сохранялись,
 заполните регистрационную форму.";

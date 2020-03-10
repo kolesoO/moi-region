@@ -48,8 +48,8 @@
                         "SHOW_FIELDS" => Array(),
                         "REQUIRED_FIELDS" => Array(),
                         "AUTH" => "Y",
-                        "USE_BACKURL" => "Y",
-                        "SUCCESS_PAGE" => "",
+                        "USE_BACKURL" => "N",
+                        "SUCCESS_PAGE" => "/personal/",
                         "SET_TITLE" => "N",
                         "USER_PROPERTY" => Array(),
                         "SEF_FOLDER" => SITE_DIR,
@@ -64,7 +64,7 @@
                     Array(
                         "REGISTER_URL" => $APPLICATION->GetCurPage(false),
                         "FORGOT_PASSWORD_URL" => "",
-                        "PROFILE_URL" => "#",
+                        "PROFILE_URL" => "/profile/",
                         "SHOW_ERRORS" => "Y"
                     )
                 );?>

@@ -18,14 +18,17 @@ class User
             $arFields["GROUP_ID"] = explode(",", \COption::GetOptionString("main", "new_user_registration_def_group"));
             //end
             //Прочие данные
+            $arFields['LOGIN'] = $arFields['EMAIL'];
             $arFields["ACTIVE"] = "Y";
-            $arFields["EMAIL"] = $arFields["LOGIN"];
             //end
             $arReturn["USER_ID"] = intval($rsUser->Add($arFields));
             if($arReturn["USER_ID"] == 0) {
                 $arReturn["error_msg"][] = self::getMsg("", "", $rsUser->LAST_ERROR);
             } else {
                 $rsUser->Authorize($arReturn["USER_ID"]);
+                if (isset($arFields["REDIRECT_URL"])) {
+                    $arReturn["redirect_url"] = $arFields["REDIRECT_URL"];
+                }
             }
         } else {
             $arReturn["error_msg"][] = self::getMsg("PAS_AND_CONF_PAS_NOT_EQ");

@@ -195,8 +195,8 @@ var obAjax = {
             if (!!errorBlock) {
                 errorBlock.innerHTML = data.error_msg.join("<br>");
             }
-        } else if (data.USER_ID > 0) {
-            location.reload();
+        } else if (data.USER_ID > 0 && !!data.redirect_url) {
+            location.href = data.redirect_url;
         }
     },
 

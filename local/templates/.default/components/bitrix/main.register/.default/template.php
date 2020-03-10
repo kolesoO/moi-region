@@ -19,13 +19,16 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 ?>
 
 <form id="regform" name="regform" enctype="multipart/form-data" onsubmit="obAjax.userRegister(this, event)">
+    <?if (isset($arParams["SUCCESS_PAGE"]) && strlen($arParams["SUCCESS_PAGE"]) > 0) :?>
+        <input type="hidden" name="REDIRECT_URL" value="<?=$arParams["SUCCESS_PAGE"]?>">
+    <?endif?>
     <div class="modal-body">
         <?if (strlen($arResult["BACKURL"]) > 0) :?>
             <input type="hidden" name="backurl" value="<?=$arResult["BACKURL"]?>">
         <?endif?>
         <div class="form-group">
             <label for="email"><?=GetMessage("REGISTER_FIELD_EMAIL")?>*</label>
-            <input id="email" type="email" name="LOGIN" class="form-control" value="<?=$arResult["VALUES"]["LOGIN"]?>" required>
+            <input id="email" type="email" name="EMAIL" class="form-control" value="<?=$arResult["VALUES"]["EMAIL"]?>" required>
         </div>
         <div class="form-group">
             <label for="pwd"><?=GetMessage("REGISTER_FIELD_PASSWORD")?>*</label>

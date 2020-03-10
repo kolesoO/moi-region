@@ -4,8 +4,14 @@ declare(strict_types=1);
 
 namespace kDevelop\Service;
 
+use Bitrix\Main\ArgumentException;
+use Bitrix\Main\ArgumentNullException;
+use Bitrix\Main\ArgumentOutOfRangeException;
+use Bitrix\Main\NotImplementedException;
 use Bitrix\Sale\Payment;
 use Bitrix\Sale\PaySystem\Service;
+use CEvent;
+use Throwable;
 
 /**
  * Class Order
@@ -30,10 +36,10 @@ class Order
     /**
      * @param $id
      * @param $arFields
-     * @throws \Bitrix\Main\ArgumentException
-     * @throws \Bitrix\Main\ArgumentNullException
-     * @throws \Bitrix\Main\ArgumentOutOfRangeException
-     * @throws \Bitrix\Main\NotImplementedException
+     * @throws ArgumentException
+     * @throws ArgumentNullException
+     * @throws ArgumentOutOfRangeException
+     * @throws NotImplementedException
      */
     public static function OnOrderUpdateHandler($id, $arFields)
     {
@@ -70,7 +76,7 @@ class Order
                         'refund_sum' => $resultPayment->getSumPaid()
                     ]);
                     $resultPaySystem->refund($resultPayment);
-                } catch (\Throwable $ex) {
+                } catch (Throwable $ex) {
                     AddMessage2Log($ex->getMessage());
                 }
             }
@@ -108,17 +114,20 @@ class Order
             );
             $orderList = ob_get_clean();
 
-            $propertyCollection = $order->getPropertyCollection();
+            try {
+                $propertyCollection = $order->getPropertyCollection();
 
-            \CEvent::sendImmediate(
-                'CREATE_PAYMENT_FOR_ORDER',
-                SITE_ID,
-                [
-                    'ORDER_ID' => $order->getId(),
-                    'ORDER_LIST' => $orderList,
-                    'EMAIL' => $propertyCollection->getUserEmail() ?? '',
-                ]
-            );
+                CEvent::sendImmediate(
+                    'CREATE_PAYMENT_FOR_ORDER',
+                    's1',
+                    [
+                        'ORDER_ID' => $order->getId(),
+                        'ORDER_LIST' => $orderList,
+                        'EMAIL' => $propertyCollection->getUserEmail()->getValue() ?? '',
+                    ]
+                );
+            } catch (Throwable $exception) {
+            }
         }
     }
 
@@ -131,7 +140,7 @@ class Order
         global $APPLICATION;
 
         //содержиое письма
-        \ob_start();
+        ob_start();
         $APPLICATION->IncludeComponent(
             "bitrix:sale.personal.order.detail.mail",
             "",
@@ -160,8 +169,7 @@ class Order
                 "DISALLOW_CANCEL" => "Y"
             ]
         );
-        $return = \ob_get_contents();
-        \ob_end_clean();
+        $return = ob_get_clean();
 
         $arFields["ORDER_LIST"] = $return;
         //end

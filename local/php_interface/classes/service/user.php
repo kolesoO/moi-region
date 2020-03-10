@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace kDevelop\Service;
 
-use CUser;
-
 class User
 {
+    /** @var string */
+    private static $userPassword = '';
+
     /**
      * @param $arFields
      */
     public static function OnBeforeUserAddHandler(&$arFields)
     {
         $arFields['LOGIN'] = $arFields['EMAIL'];
+        self::$userPassword = $arFields['PASSWORD'];
     }
 
     /**
@@ -21,7 +23,6 @@ class User
      */
     public static function OnSendUserInfoHandler(&$arParams)
     {
-        $user = CUser::GetByID($arParams['FIELDS']['USER_ID'])->fetch();
-        $arParams['FIELDS']['PASSWORD'] = $user['PASSWORD'];
+        $arParams['FIELDS']['PASSWORD'] = self::$userPassword;
     }
 }

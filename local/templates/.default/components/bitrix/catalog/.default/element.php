@@ -322,7 +322,9 @@ $APPLICATION->IncludeComponent(
         'COMPATIBLE_MODE' => (isset($arParams['COMPATIBLE_MODE']) ? $arParams['COMPATIBLE_MODE'] : ''),
         'DISABLE_INIT_JS_IN_COMPONENT' => (isset($arParams['DISABLE_INIT_JS_IN_COMPONENT']) ? $arParams['DISABLE_INIT_JS_IN_COMPONENT'] : ''),
         "IMAGE_SIZE" => $arParams["IMAGE_SIZE"],
-        "DEVICE_TYPE" => $arParams["DEVICE_TYPE"]
+        "DEVICE_TYPE" => $arParams["DEVICE_TYPE"],
+        "SLIDER_ARROWS" => $arParams["DEVICE_TYPE"] == "DESKTOP" ? "true" : "false",
+        "SLIDER_AUTOPLAY" => $arParams["DEVICE_TYPE"] == "DESKTOP" ? "false" : "true",
     )
 );
 //end

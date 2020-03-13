@@ -57,7 +57,7 @@ $rsAsset->addJs(SITE_TEMPLATE_PATH.'/js/main.js');
         <div id="panel"><?$APPLICATION->ShowPanel();?></div>
     <?endif?>
     <?if (DEVICE_TYPE != "DESKTOP") :?>
-        <div id="main-menu" class="position-absolute popup-menu">
+        <div id="main-menu" class="position-fixed popup-menu">
             <?$APPLICATION->IncludeComponent(
                 "bitrix:menu",
                 "header-popup",

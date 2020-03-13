@@ -70,36 +70,39 @@ else
                         </a>
                         <div id="order-detail-<?=$order['ORDER']['ACCOUNT_NUMBER']?>" data-parent="#accordion-<?=$order['ORDER']['ACCOUNT_NUMBER']?>" class="collapse">
                             <div class="mb-n3">
-                                <div class="row border-top border-bottom pt-1 pb-1 mt-2 mb-2">
-                                    <div class="col-lg-6 col-md-5">Товар</div>
-                                    <div class="col-lg-2 col-md-2">Цена</div>
-                                    <div class="col-lg-2 col-md-3">Количество</div>
-                                    <div class="col-lg-2 col-md-2">Стоимость</div>
-                                </div>
                                 <?foreach ($order['BASKET_ITEMS'] as $item) :?>
-                                    <div class="row align-items-lg-center mb-3">
-                                        <div class="col-lg-6 col-md-5">
-                                            <a href="#" class="h6 text-success text-decoration-none"><?=$item['NAME']?></a>
-                                            <div class="text-secondary mt-2">
-                                                <div><small>Вес:  <?=$item['WEIGHT']?></small></div>
+                                    <div class="border-top pt-3 mt-3 mb-3">
+                                        <div class="row mb-2">
+                                            <div class="col-6 align-self-center">Товар</div>
+                                            <div class="col-6">
+                                                <a href="#" class="h6 text-success text-decoration-none"><?=$item['NAME']?></a>
                                             </div>
                                         </div>
-                                        <div class="col-lg-2 col-md-2 align-self-lg-auto align-self-center">
-                                            <?if (isset($item['DISCOUNT_PRICE'])) :?>
+                                        <div class="row mb-2">
+                                            <div class="col-6 align-self-center">Цена</div>
+                                            <div class="col-6 align-self-center">
+                                                <?if (isset($item['DISCOUNT_PRICE'])) :?>
+                                                    <small class="text-secondary">
+                                                        <s><?=SaleFormatCurrency($item['BASE_PRICE'], $item["CURRENCY"])?></s>
+                                                    </small>
+                                                <?endif?>
+                                                <div class="h6 mb-0"><?=SaleFormatCurrency($item['PRICE'], $item["CURRENCY"])?></div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-6 align-self-center">Количество</div>
+                                            <div class="col-6 align-self-center">
+                                                <span><?=$item['QUANTITY']?></span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 align-self-center">Стоимость</div>
+                                            <div class="col-6 align-self-center">
                                                 <small class="text-secondary">
-                                                    <s><?=SaleFormatCurrency($item['BASE_PRICE'], $item["CURRENCY"])?></s>
+                                                    <s><?=SaleFormatCurrency($item['BASE_PRICE']*floatval($item['QUANTITY']), $item['CURRENCY'])?></s>
                                                 </small>
-                                            <?endif?>
-                                            <div class="h6 mb-0"><?=SaleFormatCurrency($item['PRICE'], $item["CURRENCY"])?></div>
-                                        </div>
-                                        <div class="col-lg-2 col-md-3 align-self-lg-auto align-self-center">
-                                            <span><?=$item['QUANTITY']?></span>
-                                        </div>
-                                        <div class="col-lg-2 col-md-2 align-self-lg-auto align-self-center">
-                                            <small class="text-secondary">
-                                                <s><?=SaleFormatCurrency($item['BASE_PRICE']*floatval($item['QUANTITY']), $item['CURRENCY'])?></s>
-                                            </small>
-                                            <div class="h5 mb-0"><?=SaleFormatCurrency($item['PRICE']*floatval($item['QUANTITY']), $item['CURRENCY'])?></div>
+                                                <div class="h5 mb-0"><?=SaleFormatCurrency($item['PRICE']*floatval($item['QUANTITY']), $item['CURRENCY'])?></div>
+                                            </div>
                                         </div>
                                     </div>
                                 <?endforeach;?>

@@ -5,7 +5,7 @@
         <label class="h5 mb-4">Способ оплаты</label>
         <div class="row">
             <?foreach ($arResult["PAY_SYSTEM"] as $arPaySystem) :?>
-                <div class="col-lg-6">
+                <div class="col-lg-6 col-12">
                     <div class="custom-radio pl-4">
                         <input
                                 id="PAY_SYSTEM_<?=$arPaySystem["ID"]?>"

@@ -11,8 +11,12 @@ $APPLICATION->SetPageProperty('description', '');
 $APPLICATION->SetPageProperty('keywords', '');
 
 $pagerTmp = '.default';
+$lineElemCnt = 4;
 if (DEVICE_TYPE == 'MOBILE') {
     $pagerTmp .= '-mobile';
+    $lineElemCnt = 1;
+} elseif(DEVICE_TYPE == "TABLET") {
+    $lineElemCnt = 2;
 }
 
 $APPLICATION->IncludeComponent(
@@ -112,7 +116,7 @@ $APPLICATION->IncludeComponent(
         "SECTIONS_VIEW_MODE" => "TEXT",
         "SECTIONS_SHOW_PARENT_NAME" => "Y",
         "PAGE_ELEMENT_COUNT" => "9",
-        "LINE_ELEMENT_COUNT" => "4",
+        "LINE_ELEMENT_COUNT" => $lineElemCnt,
         "ELEMENT_SORT_FIELD" => (isset($_GET["sort_by"]) ? $_GET["sort_by"] : "sort"),
         "ELEMENT_SORT_ORDER" => (isset($_GET["sort_by"]) ? $_GET["sort_order"] : "asc"),
         "ELEMENT_SORT_FIELD2" => "PROPERTY_CML2_ARTICLE",

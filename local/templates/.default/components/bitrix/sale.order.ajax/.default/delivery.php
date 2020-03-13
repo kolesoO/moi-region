@@ -6,7 +6,7 @@
         <?foreach ($arResult["DELIVERY"] as $delivery_id => $arDelivery):
             if ($delivery_id <= 0) continue;
             ?>
-            <div class="col-6">
+            <div class="col-6 col-12">
                 <div class="custom-radio pl-4">
                     <input type="radio"
                            id="DELIVERY_ID_<?=$arDelivery["ID"]?>"

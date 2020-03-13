@@ -35,7 +35,7 @@ $this->setFrameMode(true);
             <div class="form-group">
                 <label class="h6"><?=GetMessage("CT_BCSF_FILTER_PRICE_TITLE")?></label>
                 <div class="row">
-                    <div class="col-lg-6 col-md-12 mb-md-2">
+                    <div class="col-12 mb-2">
                         <input
                                 class="form-control"
                                 name="<?=$arItem["VALUES"]["MIN"]["CONTROL_NAME"]?>"
@@ -47,7 +47,7 @@ $this->setFrameMode(true);
                                 min="0"
                         >
                     </div>
-                    <div class="col-lg-6 col-md-12">
+                    <div class="col-12">
                         <input
                                 class="form-control"
                                 name="<?=$arItem["VALUES"]["MAX"]["CONTROL_NAME"]?>"
@@ -78,7 +78,7 @@ $this->setFrameMode(true);
             <?switch ($arItem["DISPLAY_TYPE"]) {
                 case "B": //числа ?>
                     <div class="row">
-                        <div class="col-lg-6 col-md-12 mb-md-2">
+                        <div class="col-12 mb-2">
                             <input
                                     class="form-control"
                                     name="<?=$arItem["VALUES"]["MIN"]["CONTROL_NAME"]?>"
@@ -89,7 +89,7 @@ $this->setFrameMode(true);
                                     onchange="smartFilter.keyup(this)"
                             >
                         </div>
-                        <div class="col-lg-6 col-md-12">
+                        <div class="col-12">
                             <input
                                     class="form-control"
                                     name="<?=$arItem["VALUES"]["MAX"]["CONTROL_NAME"]?>"

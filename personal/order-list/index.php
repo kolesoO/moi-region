@@ -7,7 +7,7 @@ $APPLICATION->SetTitle("Личный кабинет");
 ?>
 
 <div class="row">
-    <div class="col-lg-3">
+    <div class="col-lg-3 mb-lg-0 mb-3">
         <?$APPLICATION->IncludeComponent(
             "bitrix:menu",
             "left",
@@ -26,9 +26,12 @@ $APPLICATION->SetTitle("Личный кабинет");
         );?>
     </div>
     <div class="col-lg-9">
-        <?$APPLICATION->IncludeComponent(
+        <?
+        $tmp = '.default';
+        $tmp .= DEVICE_TYPE == 'MOBILE' ? '-mobile' : '';
+        $APPLICATION->IncludeComponent(
             "bitrix:sale.personal.order.list",
-            "",
+            $tmp,
             Array(
                 "STATUS_COLOR_N" => "green",
                 "STATUS_COLOR_P" => "yellow",

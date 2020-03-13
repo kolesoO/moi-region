@@ -124,11 +124,11 @@ $wrapClass = $arResult["ITEMS_COUNT"] > $arParams["LINE_ELEMENT_COUNT"] ? ' js-s
             <div class="h2 mb-5">Похожие товары</div>
             <div
                     class="row clearfix<?=$wrapClass?>"
-                    data-autoplay="false"
+                    data-autoplay="<?=$arParams['SLIDER_AUTOPLAY']?>"
                     data-autoplaySpeed="5000"
                     data-infinite="false"
                     data-speed="1000"
-                    data-arrows="true"
+                    data-arrows="<?=$arParams['SLIDER_ARROWS']?>"
                     data-dots="false"
                     data-slidesToShow="<?=$arParams["LINE_ELEMENT_COUNT"]?>"
                     data-nextArrow="<a href='#' class='arrow-left text-success'><i class='fas fa-arrow-right'></i></a>"

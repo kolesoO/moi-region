@@ -29,8 +29,8 @@ button:focus{
 }
 .icon_sup .icon_sup-number{
     position: absolute;
-    top: -15px;
-    left: -15px;
+    top: -12px;
+    left: -12px;
 }
 .header a,
 .footer a{
@@ -142,23 +142,23 @@ a.text-hover-white:hover{
 }
 .popup-menu{
     top: 0;
-    transition: right .3s;
+    transition: left .3s;
     z-index: 1021;
 }
 @media (min-width: 768px) {
     .popup-menu{
-        right: -25%;
+        left: -25%;
         width: 25%;
     }
 }
 @media (max-width: 767px) {
     .popup-menu{
-        right: -50%;
+        left: -50%;
         width: 50%;
     }
 }
 .popup-menu.active{
-    right: 0;
+    left: 0;
 }
 .image-block{
     background-repeat: no-repeat;
@@ -222,4 +222,17 @@ a.text-hover-white:hover{
     background-repeat: no-repeat;
     background-position: 50% 50%;
     background-size: cover;
+}
+
+@media (max-width: 767px) {
+    .breadcrumb{
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        line-height: normal;
+        overflow: hidden;
+        display: block;
+    }
+    .breadcrumb-item{
+        display: inline-block;
+    }
 }

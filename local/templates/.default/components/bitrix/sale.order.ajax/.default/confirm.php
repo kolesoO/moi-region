@@ -25,7 +25,7 @@ if ($arParams["SET_TITLE"] == "Y") {
         <? if ($arParams['NO_PERSONAL'] !== 'Y'): ?>
             <p><?=Loc::getMessage('SOA_ORDER_SUC1', ['#LINK#' => $arParams['PATH_TO_PERSONAL']])?></p>
         <? endif; ?>
-        <?if ($arResult['ORDER']['STATUS_ID'] == 'S') :?>
+        <?if ($arResult['ORDER']['STATUS_ID'] == 'N') :?>
             <?foreach ($arResult["PAYMENT"] as $payment) :
                 if ($payment["PAID"] == 'Y') continue;
                 if (empty($arResult['PAY_SYSTEM_LIST']) || !array_key_exists($payment["PAY_SYSTEM_ID"], $arResult['PAY_SYSTEM_LIST'])) continue;

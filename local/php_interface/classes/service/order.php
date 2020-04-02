@@ -18,6 +18,12 @@ use Throwable;
  */
 class Order
 {
+    public const CANCELED_STATUS = 'C';
+
+    public const BUILD_STATUS = 'S';
+
+    public const FINALLY_PAYED_STATUS = 'P';
+
     /** @var array */
     private static $methodMap = [
         "SALE_NEW_ORDER" => "saleNewOrderHandler"
@@ -66,15 +72,9 @@ class Order
         /** @var Service $resultPaySystem */
         /** @var Payment $resultPayment */
 
-        if ($order->getField('STATUS_ID') == 'C') {
+        if ($order->getField('STATUS_ID') == self::CANCELED_STATUS) {
             if ($resultPayment->getSumPaid() > 0) {
                 try {
-                    AddMessage2Log([
-                        'action' => 'Try to refund order sum',
-                        'order_id' => $order->getId(),
-                        'order_sum' => $order->getPrice(),
-                        'refund_sum' => $resultPayment->getSumPaid()
-                    ]);
                     $resultPaySystem->refund($resultPayment);
                 } catch (Throwable $ex) {
                     AddMessage2Log($ex->getMessage());
@@ -82,7 +82,7 @@ class Order
             }
             $order->setField('CANCELED', 'Y');
             $order->save();
-        } elseif ($order->getField('STATUS_ID') == 'S') {
+        } elseif ($order->getField('STATUS_ID') == self::BUILD_STATUS) {
             ob_start();
             $APPLICATION->IncludeComponent(
                 "bitrix:sale.personal.order.detail.mail",
@@ -116,7 +116,6 @@ class Order
 
             try {
                 $propertyCollection = $order->getPropertyCollection();
-
                 CEvent::sendImmediate(
                     'CREATE_PAYMENT_FOR_ORDER',
                     's1',
@@ -127,6 +126,23 @@ class Order
                     ]
                 );
             } catch (Throwable $exception) {
+            }
+
+            $orderSum = $order->getPrice();
+            $orderSumPaid = $resultPayment->getSumPaid();
+            if ($orderSumPaid > $orderSum) {
+                $resultPayment->setField('SUM', $orderSum);
+                try {
+                    $refund = $resultPaySystem->refund($resultPayment, (int) ($orderSumPaid - $orderSum));
+                    if ($refund->isSuccess()) {
+                        $order->setField('STATUS_ID', self::FINALLY_PAYED_STATUS);
+                        $order->save();
+                    }
+                } catch (Throwable $ex) {
+                    AddMessage2Log([
+                        'exception' => $ex->getMessage(),
+                    ]);
+                }
             }
         }
     }

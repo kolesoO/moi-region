@@ -19,6 +19,7 @@ Main\Loader::registerAutoLoadClasses(null, [
     "\kDevelop\Settings\Store" => "/local/php_interface/classes/settings/store.php",
     "\kDevelop\Service\Order" => "/local/php_interface/classes/service/order.php",
     "\kDevelop\Service\User" => "/local/php_interface/classes/service/user.php",
+    "\kDevelop\System\CSaleExport" => "/local/php_interface/classes/system/CSaleExport.php",
 ]);
 //end
 

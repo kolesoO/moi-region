@@ -7,7 +7,7 @@ $APPLICATION->SetTitle("Персональные данные");
 ?>
 
 <div class="row">
-    <div class="col-lg-3">
+    <div class="col-lg-3 mb-lg-0 mb-3">
         <?$APPLICATION->IncludeComponent(
             "bitrix:menu",
             "left",

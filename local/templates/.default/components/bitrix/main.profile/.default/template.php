@@ -30,6 +30,10 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             <input id="email" class="form-control" type="email" name="EMAIL" value="<?=$arResult["arUser"]["EMAIL"]?>" required>
         </div>
         <div class="form-group">
+            <label for="phone"><?=GetMessage('USER_PHONE')?></label>
+            <input id="phone" class="form-control" type="tel" name="PERSONAL_PHONE" value="<?=$arResult["arUser"]["PERSONAL_PHONE"]?>">
+        </div>
+        <div class="form-group">
             <label for="login"><?=GetMessage('LOGIN')?></label>
             <input id="login" class="form-control" type="text" name="LOGIN" value="<?=$arResult["arUser"]["LOGIN"]?>" required>
         </div>

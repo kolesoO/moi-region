@@ -19,7 +19,7 @@ $wrapClass = $arResult["ITEMS_COUNT"] > $arParams["LINE_ELEMENT_COUNT"] ? ' js-s
 <?if ($arResult["ITEMS_COUNT"] > 0) :?>
     <div
         class="row clearfix<?=$wrapClass?>"
-        data-autoplay="false"
+        data-autoplay="<?=$arParams["SLIDER_AUTOPLAY"]?>"
         data-autoplaySpeed="5000"
         data-infinite="false"
         data-speed="1000"

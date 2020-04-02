@@ -256,7 +256,8 @@ $rsAsset->addJs(SITE_TEMPLATE_PATH.'/libs/baguetteBox/1.10.0/baguetteBox.min.js'
                     "HEIGHT" => 300
                 ],
                 "LINE_ELEMENT_COUNT" => $lineElemCnt,
-                "SLIDER_ARROWS" => DEVICE_TYPE == "DESKTOP" ? "true" : "false"
+                "SLIDER_ARROWS" => DEVICE_TYPE == "DESKTOP" ? "true" : "false",
+                "SLIDER_AUTOPLAY" => DEVICE_TYPE == "DESKTOP" ? "false" : "true",
             ]
         );?>
     </div>
@@ -374,6 +375,7 @@ $rsAsset->addJs(SITE_TEMPLATE_PATH.'/libs/baguetteBox/1.10.0/baguetteBox.min.js'
                 "USE_PRODUCT_QUANTITY" => "Y",
                 "VIEW_MODE" => "SECTION",
                 "SLIDER_ARROWS" => DEVICE_TYPE == "DESKTOP" ? "true" : "false",
+                "SLIDER_AUTOPLAY" => DEVICE_TYPE == "DESKTOP" ? "false" : "true",
                 "IMAGE_SIZE" => [
                     "WIDTH" => 300,
                     "HEIGHT" => 300

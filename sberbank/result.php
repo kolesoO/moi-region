@@ -26,13 +26,12 @@ if (CModule::IncludeModule("sale"))
 
 	if ($item !== false)
 	{
-		
+
 		$service = new PaySystem\Service($item);
 		if ($service instanceof PaySystem\Service)
 		{
 			$result = $service->processRequest($request);
-			// echo "<pre>";
-			// print_r($result);
+			echo '<script>setTimeout(function(){location.href="/order/?ORDER_ID=' . $request->get('ORDER_ID') . '"}, 3000);</script>';
 
 		}
 	}

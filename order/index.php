@@ -26,7 +26,7 @@ $APPLICATION->IncludeComponent(
         "DELIVERY_NO_AJAX" => "Y",
         "DELIVERY_NO_SESSION" => "Y",
         "DELIVERY_TO_PAYSYSTEM" => "d2p",
-        "DISABLE_BASKET_REDIRECT" => "N",
+        "DISABLE_BASKET_REDIRECT" => "Y",
         "MESS_DELIVERY_CALC_ERROR_TEXT" => "Вы можете продолжить оформление заказа, а чуть позже менеджер магазина свяжется с вами и уточнит информацию по доставке.",
         "MESS_DELIVERY_CALC_ERROR_TITLE" => "Не удалось рассчитать стоимость доставки.",
         "MESS_FAIL_PRELOAD_TEXT" => "Вы заказывали в нашем интернет-магазине, поэтому мы заполнили все данные автоматически. Обратите внимание на развернутый блок с информацией о заказе. Здесь вы можете внести необходимые изменения или оставить как есть и нажать кнопку \"#ORDER_BUTTON#\".",

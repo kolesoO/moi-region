@@ -1574,15 +1574,17 @@ class SaleOrderAjax extends \CBitrixComponent
 					{
 						LocalRedirect($APPLICATION->GetCurPageParam());
 					}
-				}
-				elseif ($arResult['AUTH']['new_user_phone_auth'] === 'Y' && $arResult['AUTH']['PHONE_NUMBER'] !== '')
-				{
-					$arResult['SMS_AUTH'] = $arAuthResult;
-				}
-				else
-				{
-					$arResult['OK_MESSAGE'][] = Loc::getMessage('STOF_ERROR_REG_CONFIRM');
-				}
+				} else {
+                    $USER->Login($arResult['AUTH']['NEW_LOGIN'], $arResult['AUTH']['NEW_PASSWORD'], 'Y');
+                }
+//				elseif ($arResult['AUTH']['new_user_phone_auth'] === 'Y' && $arResult['AUTH']['PHONE_NUMBER'] !== '')
+//				{
+//					$arResult['SMS_AUTH'] = $arAuthResult;
+//				}
+//				else
+//				{
+//					$arResult['OK_MESSAGE'][] = Loc::getMessage('STOF_ERROR_REG_CONFIRM');
+//				}
 			}
 		}
 

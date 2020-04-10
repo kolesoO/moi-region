@@ -13,6 +13,8 @@ use CSaleExport as BaseCSaleExport;
 
 class CSaleExport extends BaseCSaleExport
 {
+    protected const FINALLY_PAYED_STATUS = 'P';
+
     /** @inheritDoc */
     public static function ExportOrders2Xml(
         $arFilter = Array(), $nTopCount = 0,
@@ -208,7 +210,7 @@ class CSaleExport extends BaseCSaleExport
 
             self::OutputXmlDocument('Order', $xmlResult, $arOrder);
 
-            if(self::getVersionSchema() >= self::PARTIAL_VERSION && $arPayment['PAID'] == 'Y')
+            if(self::getVersionSchema() >= self::PARTIAL_VERSION && $order->getField('STATUS_ID') === self::FINALLY_PAYED_STATUS)
             {
                 self::OutputXmlDocumentsByType('Payment',$xmlResult, $arOrder, $arPayment, $order, $agentParams, $arProp, $locationStreetPropertyValue);
                 self::OutputXmlDocumentsByType('Shipment',$xmlResult, $arOrder, $arShipment, $order, $agentParams, $arProp, $locationStreetPropertyValue);

@@ -567,7 +567,7 @@ else
 			$position = false;
 			$startTime = time();
 
-			$loader = new CSaleOrderLoader;
+			$loader = new \kDevelop\System\CSaleOrderLoader;
 			$loader->arParams = $arParams;
 			$loader->bNewVersion = true;
 			$loader->crmCompatibleMode = $bExportFromCrm;

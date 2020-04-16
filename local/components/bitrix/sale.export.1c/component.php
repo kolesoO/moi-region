@@ -467,7 +467,7 @@ else
 		if(filesize($new_file_name)>0)
 		{
 			$position = false;
-			$loader = new CSaleOrderLoader;
+			$loader = new \kDevelop\System\CSaleOrderLoader;
 			$loader->arParams = $arParams;
 
 			$o = new CXMLFileStream;

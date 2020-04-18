@@ -85,5 +85,6 @@ if ($arParams["SET_TITLE"] == "Y") {
         <p><b><?=Loc::getMessage("SOA_ERROR_ORDER")?></b></p>
         <p><?=Loc::getMessage("SOA_ERROR_ORDER_LOST", ["#ORDER_ID#" => htmlspecialcharsbx($arResult["ACCOUNT_NUMBER"])])?></p>
         <div><?=Loc::getMessage("SOA_ERROR_ORDER_LOST1")?></div>
+        <div><?=Loc::getMessage("SOA_ERROR_ORDER_LOST2")?></div>
     <? endif ?>
 </div>

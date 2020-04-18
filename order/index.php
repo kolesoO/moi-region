@@ -44,7 +44,7 @@ $APPLICATION->IncludeComponent(
         "PROPS_FADE_LIST_1" => array("17","19"),
         "SEND_NEW_USER_NOTIFY" => "Y",
         "SERVICES_IMAGES_SCALING" => "standard",
-        "SET_TITLE" => "N",
+        "SET_TITLE" => "Y",
         "SHOW_BASKET_HEADERS" => "N",
         "SHOW_COUPONS_BASKET" => "Y",
         "SHOW_COUPONS_DELIVERY" => "Y",

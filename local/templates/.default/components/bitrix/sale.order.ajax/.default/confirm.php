@@ -9,8 +9,20 @@ use Bitrix\Main\Localization\Loc;
  * @var $USER
  */
 
+$isPayed = false;
+
+foreach ($arResult["PAYMENT"] as $payment) {
+    if ($payment["PAID"] == 'Y') {
+        $isPayed = true;
+    }
+}
+
 if ($arParams["SET_TITLE"] == "Y") {
-	$APPLICATION->SetTitle(Loc::getMessage("SOA_ORDER_COMPLETE"));
+	$APPLICATION->SetTitle(
+        $isPayed
+            ? Loc::getMessage("SOA_ORDER_PAYED")
+            : Loc::getMessage("SOA_ORDER_COMPLETE")
+    );
 }
 ?>
 

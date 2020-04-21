@@ -130,20 +130,20 @@ class Order
 
             $orderSum = $order->getPrice();
             $orderSumPaid = $resultPayment->getSumPaid();
+
             if ($orderSumPaid > $orderSum) {
                 $resultPayment->setField('SUM', $orderSum);
                 try {
                     $refund = $resultPaySystem->refund($resultPayment, (int) ($orderSumPaid - $orderSum));
-                    if ($refund->isSuccess()) {
-                        $order->setField('STATUS_ID', self::FINALLY_PAYED_STATUS);
-                        $order->save();
-                    }
                 } catch (Throwable $ex) {
                     AddMessage2Log([
                         'exception' => $ex->getMessage(),
                     ]);
                 }
             }
+
+            $order->setField('STATUS_ID', self::FINALLY_PAYED_STATUS);
+            $order->save();
         }
     }
 

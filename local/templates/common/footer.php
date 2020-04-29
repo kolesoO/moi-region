@@ -96,5 +96,21 @@
         );
     }
     ?>
+    <?if (!isset($_COOKIE['cookie_policy']) || $_COOKIE['cookie_policy'] != 'true') :?>
+        <div id="popup-cookie" class="popup_content popup_cookie">
+            <a href="#" class="close js-toggle_class" data-target="#popup-cookie" data-class="active">
+                <span>×</span>
+            </a>
+            <?$APPLICATION->IncludeComponent(
+                "bitrix:main.include",
+                ".default",
+                [
+                    "AREA_FILE_SHOW" => "file",
+                    "PATH" => SITE_TEMPLATE_PATH . "/include/footer/cookie-policy.php"
+                ],
+                false
+            );?>
+        </div>
+    <?endif?>
 </body>
 </html>

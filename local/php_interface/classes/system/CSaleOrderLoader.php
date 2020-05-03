@@ -234,166 +234,166 @@ class CSaleOrderLoader extends BaseCSaleOrderLoader
 //                                }
 //
 //                                break;
-//                            case 'shipment_operation':
-//
-//                                if(isset($arDocument['SHIPMENT_ORDER_ID']) && strlen($arDocument['ORDER_ID'])<=0)
-//                                    $arDocument['ORDER_ID'] = $arDocument['SHIPMENT_ORDER_ID'];
-//
-//                                if(strlen($arDocument["XML_1C_DOCUMENT_ID"])>0)
-//                                {
-//                                    $this->setVersion1C($arDocument["VERSION_1C"]);
-//                                    $this->setXMLDocumentID($arDocument["XML_1C_DOCUMENT_ID"]);
-//                                    $this->setOrderIdOriginal($arDocument["ORDER_ID_ORIG"]);
-//
-//                                    $this->logMessage("Document.XML_1C_DOCUMENT_ID: ".$arDocument['XML_1C_DOCUMENT_ID']);
-//                                    $this->logMessage("Document.VERSION_1C: ".$arDocument['VERSION_1C']);
-//                                    $this->logMessage("Document.ORDER_ID_ORIG: ".$arDocument['ORDER_ID_ORIG']);
-//
-//                                    if($arDocument['ORDER_ID'] !== false)
-//                                    {
-//                                        /** @var Order $order */
-//                                        if($order = Order::load($arDocument['ORDER_ID']))
-//                                        {
-//                                            if ($order->getField("STATUS_ID") != "F")
-//                                            {
-//                                                if($arDocument["CANCELED"] == "true")
-//                                                {
-//                                                    if (strlen($arDocument["ID"])>0 && ($shipment = $order->getShipmentCollection()->getItemById($arDocument['ID'])))
-//                                                    {
-//                                                        $deleteShipment = $this->deleteDocumentShipment($shipment);
-//                                                        if(!$deleteShipment->isSuccess())
-//                                                            $this->strErrorDocument .= "\n".GetMessage("CC_BSC1_ORDER_ERROR_4", Array('#XML_1C_DOCUMENT_ID#'=>$arDocument['XML_1C_DOCUMENT_ID'])).array_shift($deleteShipment->getErrors())->getMessage();
-//                                                    }
-//                                                    else
-//                                                        $this->strErrorDocument .= "\n".GetMessage("CC_BSC1_SHIPMENT_ERROR_16", Array( '#ORDER_ID#'=>$arDocument['ORDER_ID'], '#XML_1C_DOCUMENT_ID#'=>$arDocument['XML_1C_DOCUMENT_ID']));
-//                                                }
-//                                                else
-//                                                {
-//                                                    if(strlen($arDocument["ID"])>0)
-//                                                    {
-//                                                        if ($shipment = $order->getShipmentCollection()->getItemById($arDocument['ID']))
-//                                                        {
-//                                                            /** @var Shipment $shipment */
-//                                                            if (!$shipment->isSystem())
-//                                                            {
-//                                                                if (!$shipment->isShipped())
-//                                                                {
-//                                                                    $this->deleteShipmentItemsByDocument($arDocument, $shipment);
-//
-//                                                                    $this->updateShipmentQuantityFromDocument($arDocument, $shipment);
-//
-//                                                                    if(strlen($this->strErrorDocument)<=0)
-//                                                                    {
-//                                                                        $this->Ship($shipment, $arDocument);
-//
-//                                                                        $this->afterShippedCompatible1C($order);
-//
-//                                                                        if(strlen($this->strErrorDocument)<=0)
-//                                                                        {
-//                                                                            $shipment->setField('UPDATED_1C','Y');
-//                                                                            $shipment->setField('VERSION_1C', $this->getVersion1C());
-//                                                                            $shipment->setField('ID_1C',$this->getXMLDocumentID());
-//                                                                        }
-//                                                                    }
-//                                                                }
-//                                                                else
-//                                                                    $this->strErrorDocument .= "\n".GetMessage("CC_BSC1_SHIPMENT_ERROR_2", Array("#ID#" => $arDocument["ID"],'#ORDER_ID#'=>$arDocument['ORDER_ID'],'#XML_1C_DOCUMENT_ID#'=>$arDocument['XML_1C_DOCUMENT_ID']));
-//                                                            }
-//                                                            else
-//                                                                $this->strErrorDocument .= "\n".GetMessage("CC_BSC1_SHIPMENT_ERROR_14", Array("#ID#" => $arDocument["ID"],'#ORDER_ID#'=>$arDocument['ORDER_ID'],'#XML_1C_DOCUMENT_ID#'=>$arDocument['XML_1C_DOCUMENT_ID']));
-//                                                        }
-//                                                        else
-//                                                            $this->strErrorDocument .= "\n".GetMessage("CC_BSC1_SHIPMENT_ERROR_3", Array("#ID#" => $arDocument["ID"],'#ORDER_ID#'=>$arDocument['ORDER_ID'],'#XML_1C_DOCUMENT_ID#'=>$arDocument['XML_1C_DOCUMENT_ID']));
-//                                                    }
-//                                                    elseif(Option::get("sale", "1C_IMPORT_NEW_SHIPMENT", 'Y')=='Y')
-//                                                    {
-//                                                        $shipment = $this->addShipmentFromDocumentByOrder($arDocument, $order);
-//
-//                                                        if(strlen($this->strErrorDocument)<=0)
-//                                                        {
-//                                                            $this->Ship($shipment, $arDocument);
-//
-//                                                            $this->afterShippedCompatible1C($order);
-//
-//                                                            if(strlen($this->strErrorDocument)<=0)
-//                                                            {
-//                                                                $shipment->setField('VERSION_1C',$this->getVersion1C());
-//                                                                $shipment->setField('ID_1C', $this->getXMLDocumentID());
-//                                                                $shipment->setField('EXTERNAL_DELIVERY','Y');
-//                                                                $shipment->setField('UPDATED_1C','Y');
-//                                                            }
-//                                                        }
-//                                                    }
-//                                                }
-//                                            }
-//                                            else
-//                                                $this->strErrorDocument .= "\n".GetMessage("CC_BSC1_SHIPMENT_ERROR_18", Array('#ORDER_ID#'=>$order->getId(), '#XML_1C_DOCUMENT_ID#'=>$this->getXMLDocumentID()));
-//                                        }
-//                                        else
-//                                            $this->strErrorDocument .= "\n".GetMessage("CC_BSC1_SHIPMENT_ERROR_15",array('#ORDER_ID#'=>$order->getId(),'#XML_1C_DOCUMENT_ID#'=>$this->getXMLDocumentID()));
-//                                    }
-//                                    elseif(Option::get("sale", "1C_IMPORT_NEW_ORDER_NEW_SHIPMENT", "Y") == 'Y') // create new shipment (ofline 1C))
-//                                    {
-//                                        if($arDocument["CANCELED"] != "true")
-//                                        {
-//                                            /** @var Order $order */
-//                                            $arOrder = $this->addOrderWithoutShipmentsPayments($arDocument);
-//                                            if($arOrder['ID']>0)
-//                                            {
-//                                                $order = Order::load($arOrder['ID']);
-//                                                $shipment = $this->addShipmentFromDocumentByOrder($arDocument, $order);
-//
-//                                                if(strlen($this->strErrorDocument)<=0)
-//                                                {
-//                                                    $this->Ship($shipment, $arDocument);
-//
-//                                                    if(strlen($this->strErrorDocument)<=0)
-//                                                    {
-//                                                        $shipment->setField('VERSION_1C', $this->getVersion1C());
-//                                                        $shipment->setField('ID_1C', $this->getXMLDocumentID());
-//                                                        $shipment->setField('EXTERNAL_DELIVERY', 'Y');
-//                                                        $shipment->setField('UPDATED_1C', 'Y');
-//
-//                                                        $order->setField('VERSION_1C', $this->getVersion1C());
-//                                                        $order->setField('ID_1C', $this->getOrderIdOriginal());
-//                                                        $order->setField('EXTERNAL_ORDER', 'Y');
-//
-//                                                    }
-//                                                }
-//                                            }
-//                                            else
-//                                                $this->strErrorDocument .= "\n".GetMessage("CC_BSC1_SHIPMENT_ERROR_7", Array('#XML_1C_DOCUMENT_ID#'=>$this->getXMLDocumentID()));
-//                                        }
-//                                        else
-//                                            $this->strErrorDocument .= "\n".GetMessage("CC_BSC1_SHIPMENT_ERROR_17", Array('#XML_1C_DOCUMENT_ID#'=>$this->getXMLDocumentID()));
-//                                    }
-//                                    else
-//                                        $this->strErrorDocument .= "\n".GetMessage("CC_BSC1_SHIPMENT_ERROR_5", Array("#ID#" => $arDocument["ID"],'#XML_1C_DOCUMENT_ID#'=>$this->getXMLDocumentID()));
-//                                }
-//                                else
-//                                    $this->strErrorDocument .= "\n".GetMessage("CC_BSC1_SHIPMENT_ERROR_6", Array("#ID#" => $arDocument["ID"]));
-//
-//                                if(strlen($this->strErrorDocument)<=0)
-//                                {
-//                                    if($order->isShipped())
-//                                    {
-//                                        if(strlen($this->arParams["FINAL_STATUS_ON_DELIVERY"])>0 &&
-//                                            $order->getField("STATUS_ID") != "F" &&
-//                                            $order->getField("STATUS_ID") != $this->arParams["FINAL_STATUS_ON_DELIVERY"]
-//                                        )
-//                                        {
-//                                            $order->setField("STATUS_ID", $this->arParams["FINAL_STATUS_ON_DELIVERY"]);
-//                                        }
-//                                    }
-//
-//                                    $order->setField('UPDATED_1C', 'Y');
-//
-//                                    $r=$order->save();
-//                                    if (!$r->isSuccess())
-//                                        $this->strErrorDocument .= array_shift($r->getErrorMessages());
-//                                }
-//
-//                                break;
+                            case 'shipment_operation':
+
+                                if(isset($arDocument['SHIPMENT_ORDER_ID']) && strlen($arDocument['ORDER_ID'])<=0)
+                                    $arDocument['ORDER_ID'] = $arDocument['SHIPMENT_ORDER_ID'];
+
+                                if(strlen($arDocument["XML_1C_DOCUMENT_ID"])>0)
+                                {
+                                    $this->setVersion1C($arDocument["VERSION_1C"]);
+                                    $this->setXMLDocumentID($arDocument["XML_1C_DOCUMENT_ID"]);
+                                    $this->setOrderIdOriginal($arDocument["ORDER_ID_ORIG"]);
+
+                                    $this->logMessage("Document.XML_1C_DOCUMENT_ID: ".$arDocument['XML_1C_DOCUMENT_ID']);
+                                    $this->logMessage("Document.VERSION_1C: ".$arDocument['VERSION_1C']);
+                                    $this->logMessage("Document.ORDER_ID_ORIG: ".$arDocument['ORDER_ID_ORIG']);
+
+                                    if($arDocument['ORDER_ID'] !== false)
+                                    {
+                                        /** @var Order $order */
+                                        if($order = Order::load($arDocument['ORDER_ID']))
+                                        {
+                                            if ($order->getField("STATUS_ID") != "F")
+                                            {
+                                                if($arDocument["CANCELED"] == "true")
+                                                {
+                                                    if (strlen($arDocument["ID"])>0 && ($shipment = $order->getShipmentCollection()->getItemById($arDocument['ID'])))
+                                                    {
+                                                        $deleteShipment = $this->deleteDocumentShipment($shipment);
+                                                        if(!$deleteShipment->isSuccess())
+                                                            $this->strErrorDocument .= "\n".GetMessage("CC_BSC1_ORDER_ERROR_4", Array('#XML_1C_DOCUMENT_ID#'=>$arDocument['XML_1C_DOCUMENT_ID'])).array_shift($deleteShipment->getErrors())->getMessage();
+                                                    }
+                                                    else
+                                                        $this->strErrorDocument .= "\n".GetMessage("CC_BSC1_SHIPMENT_ERROR_16", Array( '#ORDER_ID#'=>$arDocument['ORDER_ID'], '#XML_1C_DOCUMENT_ID#'=>$arDocument['XML_1C_DOCUMENT_ID']));
+                                                }
+                                                else
+                                                {
+                                                    if(strlen($arDocument["ID"])>0)
+                                                    {
+                                                        if ($shipment = $order->getShipmentCollection()->getItemById($arDocument['ID']))
+                                                        {
+                                                            /** @var Shipment $shipment */
+                                                            if (!$shipment->isSystem())
+                                                            {
+                                                                if (!$shipment->isShipped())
+                                                                {
+                                                                    $this->deleteShipmentItemsByDocument($arDocument, $shipment);
+
+                                                                    $this->updateShipmentQuantityFromDocument($arDocument, $shipment);
+
+                                                                    if(strlen($this->strErrorDocument)<=0)
+                                                                    {
+                                                                        $this->Ship($shipment, $arDocument);
+
+                                                                        $this->afterShippedCompatible1C($order);
+
+                                                                        if(strlen($this->strErrorDocument)<=0)
+                                                                        {
+                                                                            $shipment->setField('UPDATED_1C','Y');
+                                                                            $shipment->setField('VERSION_1C', $this->getVersion1C());
+                                                                            $shipment->setField('ID_1C',$this->getXMLDocumentID());
+                                                                        }
+                                                                    }
+                                                                }
+                                                                else
+                                                                    $this->strErrorDocument .= "\n".GetMessage("CC_BSC1_SHIPMENT_ERROR_2", Array("#ID#" => $arDocument["ID"],'#ORDER_ID#'=>$arDocument['ORDER_ID'],'#XML_1C_DOCUMENT_ID#'=>$arDocument['XML_1C_DOCUMENT_ID']));
+                                                            }
+                                                            else
+                                                                $this->strErrorDocument .= "\n".GetMessage("CC_BSC1_SHIPMENT_ERROR_14", Array("#ID#" => $arDocument["ID"],'#ORDER_ID#'=>$arDocument['ORDER_ID'],'#XML_1C_DOCUMENT_ID#'=>$arDocument['XML_1C_DOCUMENT_ID']));
+                                                        }
+                                                        else
+                                                            $this->strErrorDocument .= "\n".GetMessage("CC_BSC1_SHIPMENT_ERROR_3", Array("#ID#" => $arDocument["ID"],'#ORDER_ID#'=>$arDocument['ORDER_ID'],'#XML_1C_DOCUMENT_ID#'=>$arDocument['XML_1C_DOCUMENT_ID']));
+                                                    }
+                                                    elseif(Option::get("sale", "1C_IMPORT_NEW_SHIPMENT", 'Y')=='Y')
+                                                    {
+                                                        $shipment = $this->addShipmentFromDocumentByOrder($arDocument, $order);
+
+                                                        if(strlen($this->strErrorDocument)<=0)
+                                                        {
+                                                            $this->Ship($shipment, $arDocument);
+
+                                                            $this->afterShippedCompatible1C($order);
+
+                                                            if(strlen($this->strErrorDocument)<=0)
+                                                            {
+                                                                $shipment->setField('VERSION_1C',$this->getVersion1C());
+                                                                $shipment->setField('ID_1C', $this->getXMLDocumentID());
+                                                                $shipment->setField('EXTERNAL_DELIVERY','Y');
+                                                                $shipment->setField('UPDATED_1C','Y');
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            else
+                                                $this->strErrorDocument .= "\n".GetMessage("CC_BSC1_SHIPMENT_ERROR_18", Array('#ORDER_ID#'=>$order->getId(), '#XML_1C_DOCUMENT_ID#'=>$this->getXMLDocumentID()));
+                                        }
+                                        else
+                                            $this->strErrorDocument .= "\n".GetMessage("CC_BSC1_SHIPMENT_ERROR_15",array('#ORDER_ID#'=>$order->getId(),'#XML_1C_DOCUMENT_ID#'=>$this->getXMLDocumentID()));
+                                    }
+                                    elseif(Option::get("sale", "1C_IMPORT_NEW_ORDER_NEW_SHIPMENT", "Y") == 'Y') // create new shipment (ofline 1C))
+                                    {
+                                        if($arDocument["CANCELED"] != "true")
+                                        {
+                                            /** @var Order $order */
+                                            $arOrder = $this->addOrderWithoutShipmentsPayments($arDocument);
+                                            if($arOrder['ID']>0)
+                                            {
+                                                $order = Order::load($arOrder['ID']);
+                                                $shipment = $this->addShipmentFromDocumentByOrder($arDocument, $order);
+
+                                                if(strlen($this->strErrorDocument)<=0)
+                                                {
+                                                    $this->Ship($shipment, $arDocument);
+
+                                                    if(strlen($this->strErrorDocument)<=0)
+                                                    {
+                                                        $shipment->setField('VERSION_1C', $this->getVersion1C());
+                                                        $shipment->setField('ID_1C', $this->getXMLDocumentID());
+                                                        $shipment->setField('EXTERNAL_DELIVERY', 'Y');
+                                                        $shipment->setField('UPDATED_1C', 'Y');
+
+                                                        $order->setField('VERSION_1C', $this->getVersion1C());
+                                                        $order->setField('ID_1C', $this->getOrderIdOriginal());
+                                                        $order->setField('EXTERNAL_ORDER', 'Y');
+
+                                                    }
+                                                }
+                                            }
+                                            else
+                                                $this->strErrorDocument .= "\n".GetMessage("CC_BSC1_SHIPMENT_ERROR_7", Array('#XML_1C_DOCUMENT_ID#'=>$this->getXMLDocumentID()));
+                                        }
+                                        else
+                                            $this->strErrorDocument .= "\n".GetMessage("CC_BSC1_SHIPMENT_ERROR_17", Array('#XML_1C_DOCUMENT_ID#'=>$this->getXMLDocumentID()));
+                                    }
+                                    else
+                                        $this->strErrorDocument .= "\n".GetMessage("CC_BSC1_SHIPMENT_ERROR_5", Array("#ID#" => $arDocument["ID"],'#XML_1C_DOCUMENT_ID#'=>$this->getXMLDocumentID()));
+                                }
+                                else
+                                    $this->strErrorDocument .= "\n".GetMessage("CC_BSC1_SHIPMENT_ERROR_6", Array("#ID#" => $arDocument["ID"]));
+
+                                if(strlen($this->strErrorDocument)<=0)
+                                {
+                                    if($order->isShipped())
+                                    {
+                                        if(strlen($this->arParams["FINAL_STATUS_ON_DELIVERY"])>0 &&
+                                            $order->getField("STATUS_ID") != "F" &&
+                                            $order->getField("STATUS_ID") != $this->arParams["FINAL_STATUS_ON_DELIVERY"]
+                                        )
+                                        {
+                                            $order->setField("STATUS_ID", $this->arParams["FINAL_STATUS_ON_DELIVERY"]);
+                                        }
+                                    }
+
+                                    $order->setField('UPDATED_1C', 'Y');
+
+                                    $r=$order->save();
+                                    if (!$r->isSuccess())
+                                        $this->strErrorDocument .= array_shift($r->getErrorMessages());
+                                }
+
+                                break;
                         }
                     }
                 }

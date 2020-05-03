@@ -8,15 +8,26 @@ use Bitrix\Main\ArgumentException;
 use Bitrix\Main\ArgumentNullException;
 use Bitrix\Main\ArgumentOutOfRangeException;
 use Bitrix\Main\Config\Option;
+use Bitrix\Main\Error;
 use Bitrix\Main\NotImplementedException;
+use Bitrix\Main\NotSupportedException;
 use Bitrix\Main\ObjectException;
 use Bitrix\Main\Type\DateTime;
 use Bitrix\Sale\Configuration;
+use Bitrix\Sale;
 use Bitrix\Sale\Order;
 use Bitrix\Sale\Shipment;
 use CDatabase;
+use CDataXML;
 use CLang;
 use CSaleOrderLoader as BaseCSaleOrderLoader;
+use CSaleOrderProps;
+use CSaleOrderUserProps;
+use CSaleOrderUserPropsValue;
+use CSalePersonType;
+use CSaleUser;
+use CUser;
+use CXMLFileStream;
 
 class CSaleOrderLoader extends BaseCSaleOrderLoader
 {
@@ -27,6 +38,7 @@ class CSaleOrderLoader extends BaseCSaleOrderLoader
      * @throws ArgumentOutOfRangeException
      * @throws NotImplementedException
      * @throws ObjectException
+     * @throws NotSupportedException
      */
     protected function nodeHandlerPartialVersion($arDocument)
     {
@@ -236,6 +248,7 @@ class CSaleOrderLoader extends BaseCSaleOrderLoader
 //                                break;
                             case 'shipment_operation':
 
+                                AddMessage2Log('start shipment_operation for order ' . $arDocument["ORDER_ID"]);
                                 if(isset($arDocument['SHIPMENT_ORDER_ID']) && strlen($arDocument['ORDER_ID'])<=0)
                                     $arDocument['ORDER_ID'] = $arDocument['SHIPMENT_ORDER_ID'];
 
@@ -271,15 +284,21 @@ class CSaleOrderLoader extends BaseCSaleOrderLoader
                                                 {
                                                     if(strlen($arDocument["ID"])>0)
                                                     {
+                                                        AddMessage2Log('start get shipment for order ' . $arDocument["ORDER_ID"]);
                                                         if ($shipment = $order->getShipmentCollection()->getItemById($arDocument['ID']))
                                                         {
+                                                            AddMessage2Log('shipment is accepted for order ' . $arDocument["ORDER_ID"]);
                                                             /** @var Shipment $shipment */
                                                             if (!$shipment->isSystem())
                                                             {
+                                                                AddMessage2Log('shipment not isSystem for order ' . $arDocument["ORDER_ID"]);
                                                                 if (!$shipment->isShipped())
                                                                 {
+                                                                    AddMessage2Log('shipment not isShipped for order ' . $arDocument["ORDER_ID"]);
+                                                                    AddMessage2Log('start deleteShipmentItemsByDocument for order ' . $arDocument["ORDER_ID"]);
                                                                     $this->deleteShipmentItemsByDocument($arDocument, $shipment);
 
+                                                                    AddMessage2Log('start updateShipmentQuantityFromDocument for order ' . $arDocument["ORDER_ID"]);
                                                                     $this->updateShipmentQuantityFromDocument($arDocument, $shipment);
 
                                                                     if(strlen($this->strErrorDocument)<=0)
@@ -403,5 +422,280 @@ class CSaleOrderLoader extends BaseCSaleOrderLoader
 
         Option::set('sale', 'onec_exchange_type', 'partial');
         Option::set('sale', 'onec_exchange_last_time', time());
+    }
+
+    function nodeHandler(CDataXML $dataXml, CXMLFileStream $fileStream)
+    {
+        $value = $dataXml->GetArray();
+        $xmlStream = $this->getXMLStream($fileStream);
+        $importer = $this->importer;
+
+        if($importer instanceof Sale\Exchange\ImportOneCBase)
+        {
+            $r = new Sale\Result();
+
+            if($importer instanceof Sale\Exchange\ImportOneCSubordinateSale)
+            {
+                $documentData = array($value[GetMessage("CC_BSC1_DOCUMENT")]);
+            }
+            elseif($importer instanceof Sale\Exchange\ImportOneCPackage)
+            {
+                $documentData = $value[GetMessage("CC_BSC1_CONTAINER")]['#'][GetMessage("CC_BSC1_DOCUMENT")];
+            }
+            else
+            {
+                $documentData = array($value[GetMessage("CC_BSC1_AGENT")]["#"]);
+            }
+
+            if(!is_array($documentData) || count($documentData)<=0)
+                $r->addError(new Error(GetMessage("CC_BSC1_DOCUMENT_XML_EMPTY")));
+
+            if($r->isSuccess())
+            {
+                /** @var Sale\Result $r */
+                $r = $importer::checkSettings();
+                if($r->isSuccess())
+                {
+                    if(strlen($xmlStream)>0)
+                        $importer->setRawData($xmlStream);
+
+                    $r = $importer->process($documentData);
+                }
+            }
+
+            if(!$r->isSuccess())
+            {
+                foreach($r->getErrorMessages() as $errorMessages)
+                {
+                    if(strlen($errorMessages)>0)
+                        $this->strError .= "\n".$errorMessages;
+                }
+            }
+
+            if($r->hasWarnings())
+            {
+                if(count($r->getWarningMessages())>0)
+                {
+                    foreach($r->getWarningMessages() as $warningMessages)
+                    {
+                        if(strlen($warningMessages)>0)
+                            $this->strError .= "\n".$warningMessages;
+                    }
+                }
+            }
+
+            Option::set('sale', 'onec_exchange_type', 'container');
+            Option::set('sale', 'onec_exchange_last_time', time());
+        }
+        elseif(!empty($value[GetMessage("CC_BSC1_DOCUMENT")]))
+        {
+            $this->nodeHandlerDefaultModuleOneC($dataXml);
+        }
+        elseif(Option::get("sale", "1C_IMPORT_NEW_ORDERS", "Y") == "Y")
+        {
+            /**
+             * @deprecated
+             */
+            $value = $value[GetMessage("CC_BSC1_AGENT")]["#"];
+            $arAgentInfo = $this->collectAgentInfo($value);
+
+            if(!empty($arAgentInfo["AGENT"]))
+            {
+                $mode = false;
+                $arErrors = array();
+                $dbUProp = CSaleOrderUserProps::GetList(array(), array("XML_ID" => $arAgentInfo["AGENT"]["ID"]), false, false, array("ID", "NAME", "USER_ID", "PERSON_TYPE_ID", "XML_ID", "VERSION_1C"));
+                if($arUProp = $dbUProp->Fetch())
+                {
+                    if($arUProp["VERSION_1C"] != $arAgentInfo["AGENT"]["VERSION"])
+                    {
+                        $mode = "update";
+                        $arAgentInfo["PROFILE_ID"] = $arUProp["ID"];
+                        $arAgentInfo["PERSON_TYPE_ID"] = $arUProp["PERSON_TYPE_ID"];
+                        $arAgentInfo["USER_ID"] = $arUProp["USER_ID"];
+                    }
+                }
+                else
+                {
+                    $user = Sale\Exchange\Entity\UserProfileImportLoader::getUserByCode($arAgentInfo["AGENT"]["ID"]);
+                    if(!empty($user))
+                    {
+                        $arAgentInfo["USER_ID"] = $user['ID'];
+                    }
+                    else
+                    {
+                        $arUser = array(
+                            "NAME" => $arAgentInfo["AGENT"]["ITEM_NAME"],
+                            "EMAIL" => $arAgentInfo["AGENT"]["CONTACT"]["MAIL_NEW"],
+                        );
+
+                        if(strlen($arUser["NAME"]) <= 0)
+                            $arUser["NAME"] = $arAgentInfo["AGENT"]["CONTACT"]["CONTACT_PERSON"];
+
+                        $emServer = $_SERVER["SERVER_NAME"];
+                        if(strpos($_SERVER["SERVER_NAME"], ".") === false)
+                            $emServer .= ".bx";
+                        if(strlen($arUser["EMAIL"]) <= 0)
+                            $arUser["EMAIL"] = "buyer".time().GetRandomCode(2)."@".$emServer;
+
+                        $arAgentInfo["USER_ID"] = CSaleUser::DoAutoRegisterUser($arUser["EMAIL"], $arUser["NAME"], $this->arParams["SITE_NEW_ORDERS"], $arErrors, array("XML_ID"=>$arAgentInfo["AGENT"]["ID"], "EXTERNAL_AUTH_ID"=>Sale\Exchange\Entity\UserImportBase::EXTERNAL_AUTH_ID));
+                    }
+
+                    if(IntVal($arAgentInfo["USER_ID"]) > 0)
+                    {
+                        $mode = "add";
+
+                        $obUser = new CUser;
+                        $userFields[] = array();
+
+                        if(strlen($arAgentInfo["AGENT"]["CONTACT"]["PHONE"])>0)
+                            $userFields["WORK_PHONE"] = $arAgentInfo["AGENT"]["CONTACT"]["PHONE"];
+
+                        if(count($userFields)>0)
+                        {
+                            if(!$obUser->Update($arAgentInfo["USER_ID"], $userFields, true))
+                                $this->strError .= "\n".$obUser->LAST_ERROR;
+                        }
+                    }
+                    else
+                    {
+                        $this->strError .= "\n".GetMessage("CC_BSC1_AGENT_USER_PROBLEM", Array("#ID#" => $arAgentInfo["AGENT"]["ID"]));
+                        if(!empty($arErrors))
+                        {
+                            foreach($arErrors as $v)
+                            {
+                                $this->strError .= "\n".$v["TEXT"];
+                            }
+                        }
+                    }
+                }
+
+                if($mode)
+                {
+                    if(empty($arPersonTypesIDs))
+                    {
+                        $dbPT = CSalePersonType::GetList(array(), array("ACTIVE" => "Y", "LIDS" => $this->arParams["SITE_NEW_ORDERS"]));
+                        while($arPT = $dbPT->Fetch())
+                        {
+                            $arPersonTypesIDs[] = $arPT["ID"];
+                        }
+                    }
+
+                    if(empty($arExportInfo))
+                    {
+                        $dbExport = CSaleExport::GetList(array(), array("PERSON_TYPE_ID" => $arPersonTypesIDs));
+                        while($arExport = $dbExport->Fetch())
+                        {
+                            $arExportInfo[$arExport["PERSON_TYPE_ID"]] = unserialize($arExport["VARS"]);
+                        }
+                    }
+
+                    if(IntVal($arAgentInfo["PERSON_TYPE_ID"]) <= 0)
+                    {
+                        foreach($arExportInfo as $pt => $value)
+                        {
+                            if(($value["IS_FIZ"] == "Y" && $arAgentInfo["AGENT"]["TYPE"] == "FIZ")
+                                || ($value["IS_FIZ"] == "N" && $arAgentInfo["AGENT"]["TYPE"] != "FIZ")
+                            )
+                                $arAgentInfo["PERSON_TYPE_ID"] = $pt;
+                        }
+                    }
+
+                    if(IntVal($arAgentInfo["PERSON_TYPE_ID"]) > 0)
+                    {
+                        $arAgentInfo["ORDER_PROPS_VALUE"] = array();
+                        $arAgentInfo["PROFILE_PROPS_VALUE"] = array();
+
+                        $arAgent = $arExportInfo[$arAgentInfo["PERSON_TYPE_ID"]];
+
+                        foreach($arAgent as $k => $v)
+                        {
+                            if(strlen($v["VALUE"]) <= 0 || $v["TYPE"] != "PROPERTY")
+                                unset($arAgent[$k]);
+                        }
+
+                        foreach($arAgent as $k => $v)
+                        {
+                            if(!empty($arAgentInfo["ORDER_PROPS"][$k]))
+                                $arAgentInfo["ORDER_PROPS_VALUE"][$v["VALUE"]] = $arAgentInfo["ORDER_PROPS"][$k];
+                        }
+
+                        if (IntVal($arAgentInfo["PROFILE_ID"]) > 0)
+                        {
+                            CSaleOrderUserProps::Update($arUProp["ID"], array("VERSION_1C" => $arAgentInfo["AGENT"]["VERSION"], "NAME" => $arAgentInfo["AGENT"]["AGENT_NAME"], "USER_ID" => $arAgentInfo["USER_ID"]));
+                            $dbUPV = CSaleOrderUserPropsValue::GetList(array(), array("USER_PROPS_ID" => $arAgentInfo["PROFILE_ID"]));
+                            while($arUPV = $dbUPV->Fetch())
+                            {
+                                $arAgentInfo["PROFILE_PROPS_VALUE"][$arUPV["ORDER_PROPS_ID"]] = array("ID" => $arUPV["ID"], "VALUE" => $arUPV["VALUE"]);
+                            }
+                        }
+
+                        if(empty($arOrderProps[$arAgentInfo["PERSON_TYPE_ID"]]))
+                        {
+                            $dbOrderProperties = CSaleOrderProps::GetList(
+                                array("SORT" => "ASC"),
+                                array(
+                                    "PERSON_TYPE_ID" => $arAgentInfo["PERSON_TYPE_ID"],
+                                    "ACTIVE" => "Y",
+                                    "UTIL" => "N",
+                                    "USER_PROPS" => "Y",
+                                ),
+                                false,
+                                false,
+                                array("ID", "TYPE", "NAME", "CODE", "USER_PROPS", "SORT", "MULTIPLE")
+                            );
+                            while ($arOrderProperties = $dbOrderProperties->Fetch())
+                            {
+                                $arOrderProps[$arAgentInfo["PERSON_TYPE_ID"]][] = $arOrderProperties;
+                            }
+                        }
+
+                        foreach($arOrderProps[$arAgentInfo["PERSON_TYPE_ID"]] as $arOrderProperties)
+                        {
+                            $curVal = $arAgentInfo["ORDER_PROPS_VALUE"][$arOrderProperties["ID"]];
+
+                            if (strlen($curVal) > 0)
+                            {
+                                if (IntVal($arAgentInfo["PROFILE_ID"]) <= 0)
+                                {
+                                    $arFields = array(
+                                        "NAME" => $arAgentInfo["AGENT"]["AGENT_NAME"],
+                                        "USER_ID" => $arAgentInfo["USER_ID"],
+                                        "PERSON_TYPE_ID" => $arAgentInfo["PERSON_TYPE_ID"],
+                                        "XML_ID" => $arAgentInfo["AGENT"]["ID"],
+                                        "VERSION_1C" => $arAgentInfo["AGENT"]["VERSION"],
+                                    );
+                                    $arAgentInfo["PROFILE_ID"] = CSaleOrderUserProps::Add($arFields);
+                                }
+                                if(IntVal($arAgentInfo["PROFILE_ID"]) > 0)
+                                {
+                                    $arFields = array(
+                                        "USER_PROPS_ID" => $arAgentInfo["PROFILE_ID"],
+                                        "ORDER_PROPS_ID" => $arOrderProperties["ID"],
+                                        "NAME" => $arOrderProperties["NAME"],
+                                        "VALUE" => $curVal
+                                    );
+                                    if(empty($arAgentInfo["PROFILE_PROPS_VALUE"][$arOrderProperties["ID"]]))
+                                    {
+                                        CSaleOrderUserPropsValue::Add($arFields);
+                                    }
+                                    elseif($arAgentInfo["PROFILE_PROPS_VALUE"][$arOrderProperties["ID"]]["VALUE"] != $curVal)
+                                    {
+                                        CSaleOrderUserPropsValue::Update($arAgentInfo["PROFILE_PROPS_VALUE"][$arOrderProperties["ID"]]["ID"], $arFields);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        $this->strError .= "\n".GetMessage("CC_BSC1_AGENT_PERSON_TYPE_PROBLEM", Array("#ID#" => $arAgentInfo["AGENT"]["ID"]));
+                    }
+                }
+            }
+            else
+            {
+                $this->strError .= "\n".GetMessage("CC_BSC1_AGENT_NO_AGENT_ID");
+            }
+        };
     }
 }

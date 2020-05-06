@@ -42,16 +42,17 @@ $APPLICATION->SetTitle("Личный кабинет");
                 "PATH_TO_CANCEL" => "order_cancel.php?ID=#ID#",
                 "PATH_TO_BASKET" => "/basket/",
                 "PATH_TO_PAYMENT" => "payment.php",
-                "ORDERS_PER_PAGE" => 20,
+                "ORDERS_PER_PAGE" => 100500,
                 "ID" => $_REQUEST['ID'],
                 "SET_TITLE" => "N",
-                "SAVE_IN_SESSION" => "Y",
+                "SAVE_IN_SESSION" => "N",
                 "NAV_TEMPLATE" => "",
                 "CACHE_TYPE" => "A",
                 "CACHE_TIME" => "3600",
                 "CACHE_GROUPS" => "Y",
-                "HISTORIC_STATUSES" => "F",
-                "ACTIVE_DATE_FORMAT" => "d.m.Y"
+                "HISTORIC_STATUSES" => "",
+                "ACTIVE_DATE_FORMAT" => "d.m.Y",
+                "DEFAULT_SORT" => 'ID'
             )
         );?>
     </div>

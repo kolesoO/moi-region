@@ -135,6 +135,7 @@ class Order
                 $resultPayment->setField('SUM', $orderSum);
                 try {
                     $refund = $resultPaySystem->refund($resultPayment, (int) ($orderSumPaid - $orderSum));
+                    $order->setField('SUM_PAID', $orderSum);
                 } catch (Throwable $ex) {
                     AddMessage2Log([
                         'exception' => $ex->getMessage(),

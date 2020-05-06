@@ -68,7 +68,7 @@ class Basket
                                 "PRICE_TYPE_ID" => $arPrice["RESULT_PRICE"]["PRICE_TYPE_ID"],
                                 "PRICE" => $arPrice["RESULT_PRICE"]["DISCOUNT_PRICE"],
                                 "BASE_PRICE" => $arPrice["RESULT_PRICE"]["BASE_PRICE"],
-                                //"CUSTOM_PRICE" => "Y",
+                                "CUSTOM_PRICE" => "Y",
                                 "CURRENCY" => "RUB",
                                 "WEIGHT" => $arItem["CATALOG_WEIGHT"],
                                 "QUANTITY" => $arParams["qnt"],

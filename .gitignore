@@ -34,3 +34,5 @@ gitignore/*
 .htaccess
 .htaccess.restore
 .htpasswd
+/vendor/
+composer.lock

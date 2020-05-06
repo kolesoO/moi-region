@@ -4,6 +4,7 @@
  */
 
 use Bitrix\Main;
+use Bitrix\Main\Loader;
 use kDevelop\Service\Order;
 use kDevelop\Service\User;
 use kDevelop\Help\Tools;
@@ -12,8 +13,7 @@ use kDevelop\Settings\Store;
 $rsManager = Main\EventManager::getInstance();
 
 //Классы
-
-Main\Loader::registerAutoLoadClasses(null, [
+Loader::registerAutoLoadClasses(null, [
     "\kDevelop\Help\Mobile_Detect" => "/local/php_interface/classes/help/mobile_detect.php",
     "\kDevelop\Help\Tools" => "/local/php_interface/classes/help/tools.php",
     "\kDevelop\Settings\Store" => "/local/php_interface/classes/settings/store.php",

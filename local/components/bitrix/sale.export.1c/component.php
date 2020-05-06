@@ -1,7 +1,11 @@
 <?
 if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 
+use Bitrix\Main\Loader;
+use Bitrix\Sale\BasketItem;
 use kDevelop\System\CSaleExport;
+
+Loader::includeModule('sale');
 
 $instance = \Bitrix\Main\Application::getInstance();
 $context = $instance->getContext();
@@ -666,12 +670,82 @@ else
 			}
 			else
 			{
-				$o->registerNodeHandler("/".GetMessage("CC_BSC1_COM_INFO")."/".GetMessage("CC_BSC1_CONTAINER"), function (CDataXML $xmlObject) use ($o, $loader)
-				{
-					\Bitrix\Sale\Exchange\ImportOneCPackageSale::configuration();
-					$loader->importer = \Bitrix\Sale\Exchange\ImportOneCPackageSale::getInstance();
-					$loader->nodeHandler($xmlObject, $o);
-				});
+//			    $o->registerNodeHandler("/".GetMessage("CC_BSC1_COM_INFO")."/".GetMessage("CC_BSC1_CONTAINER"), function (CDataXML $xmlObject) use ($o, $loader)
+//				{
+//					\Bitrix\Sale\Exchange\ImportOneCPackageSale::configuration();
+//					$loader->importer = \Bitrix\Sale\Exchange\ImportOneCPackageSale::getInstance();
+//					$loader->nodeHandler($xmlObject, $o);
+//				});
+
+                //import
+                $content = simplexml_load_string(
+                    file_get_contents($ABS_FILE_NAME)
+                );
+                $data = json_decode(json_encode($content), true);
+
+                foreach ($data['Контейнер'] as $container) {
+                    try {
+                        $doc = $container['Документ'];
+                        $order = \Bitrix\Sale\Order::load((int) $doc['Ид']);
+                        if (is_null($order)) continue;
+
+                        $order->setField('COMMENTS', $doc['Комментарий']);
+
+                        if (isset($doc['ЗначенияРеквизитов'])) {
+                            if (isset($doc['ЗначенияРеквизитов']['ЗначениеРеквизита']) && is_array($doc['ЗначенияРеквизитов']['ЗначениеРеквизита'])) {
+                                foreach ($doc['ЗначенияРеквизитов']['ЗначениеРеквизита'] as $item) {
+                                    if (!isset($item['Наименование'])) continue;
+                                    switch ($item['Наименование']) {
+                                        case 'Отменен':
+                                            if (!$order->isCanceled() && $item['Значение'] === 'true') {
+                                                $order->setField('CANCELED', 'Y');
+                                            }
+                                            break;
+                                        case 'Статуса заказа ИД':
+                                            $order->setField('STATUS_ID', $item['Значение']);
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+
+                        if (isset($doc['Товары'])) {
+                            if (isset($doc['Товары']['Товар']) && is_array($doc['Товары']['Товар'])) {
+                                $updatedBasketItems = [];
+                                $basket = $order->getBasket()->getBasketItems();
+                                foreach ($doc['Товары']['Товар'] as $product) {
+                                    /** @var BasketItem $basketItem */
+                                    foreach ($basket as $basketItem) {
+                                        $productDB = \Bitrix\Iblock\ElementTable::getRowById(
+                                            $basketItem->getProductId()
+                                        );
+                                        if ($productDB['XML_ID'] != $product['Ид']) continue;
+
+                                        \Bitrix\Sale\Internals\BasketTable::update($basketItem->getId(), [
+                                            'PRICE' => (float) $product['Сумма'],
+                                            'QUANTITY' => (float) $product['Количество'],
+                                        ]);
+                                        $updatedBasketItems[] = $basketItem->getId();
+                                    }
+                                }
+                                foreach ($basket as $basketItem) {
+                                    if (in_array($basketItem->getId(), $updatedBasketItems)) continue;
+
+                                    \Bitrix\Sale\Internals\BasketTable::delete(
+                                        $basketItem->getId()
+                                    );
+                                }
+                            }
+                        }
+                        \Bitrix\Sale\OrderTable::update($order->getId(), [
+                            'PRICE' => (float) $doc['Сумма'],
+                        ]);
+                        $order->save();
+                    } catch (Throwable $exception) {
+                        echo $exception->getMessage();
+                    }
+                }
+                //end
 			}
 			//endregion
 

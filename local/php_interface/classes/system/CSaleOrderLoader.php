@@ -247,8 +247,6 @@ class CSaleOrderLoader extends BaseCSaleOrderLoader
 //
 //                                break;
                             case 'shipment_operation':
-
-                                AddMessage2Log('start shipment_operation for order ' . $arDocument["ORDER_ID"]);
                                 if(isset($arDocument['SHIPMENT_ORDER_ID']) && strlen($arDocument['ORDER_ID'])<=0)
                                     $arDocument['ORDER_ID'] = $arDocument['SHIPMENT_ORDER_ID'];
 
@@ -284,21 +282,15 @@ class CSaleOrderLoader extends BaseCSaleOrderLoader
                                                 {
                                                     if(strlen($arDocument["ID"])>0)
                                                     {
-                                                        AddMessage2Log('start get shipment for order ' . $arDocument["ORDER_ID"]);
                                                         if ($shipment = $order->getShipmentCollection()->getItemById($arDocument['ID']))
                                                         {
-                                                            AddMessage2Log('shipment is accepted for order ' . $arDocument["ORDER_ID"]);
                                                             /** @var Shipment $shipment */
                                                             if (!$shipment->isSystem())
                                                             {
-                                                                AddMessage2Log('shipment not isSystem for order ' . $arDocument["ORDER_ID"]);
                                                                 if (!$shipment->isShipped())
                                                                 {
-                                                                    AddMessage2Log('shipment not isShipped for order ' . $arDocument["ORDER_ID"]);
-                                                                    AddMessage2Log('start deleteShipmentItemsByDocument for order ' . $arDocument["ORDER_ID"]);
                                                                     $this->deleteShipmentItemsByDocument($arDocument, $shipment);
 
-                                                                    AddMessage2Log('start updateShipmentQuantityFromDocument for order ' . $arDocument["ORDER_ID"]);
                                                                     $this->updateShipmentQuantityFromDocument($arDocument, $shipment);
 
                                                                     if(strlen($this->strErrorDocument)<=0)

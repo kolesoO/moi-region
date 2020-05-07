@@ -221,14 +221,6 @@ Class Gateway
 
 	 	$response =  $http->getResult();
 
-		AddMessage2Log([
-			'method' => 'setRequest',
-			'sber_method' => $method,
-			'result' => $response,
-			'data' => $data,
-			'url' => $this->gate_url . $method,
-		]);
-
 	 	if ($this->is_json($response)) {
 	    	$response =  Web\Json::decode($response, true);
 	    } else {

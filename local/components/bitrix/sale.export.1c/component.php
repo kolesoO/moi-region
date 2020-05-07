@@ -722,7 +722,7 @@ else
                                         if ($productDB['XML_ID'] != $product['Ид']) continue;
 
                                         \Bitrix\Sale\Internals\BasketTable::update($basketItem->getId(), [
-                                            'PRICE' => (float) $product['Сумма'],
+                                            'PRICE' => (float) $product['Цена'],
                                             'QUANTITY' => (float) $product['Количество'],
                                         ]);
                                         $updatedBasketItems[] = $basketItem->getId();

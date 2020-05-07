@@ -79,7 +79,7 @@ class Basket
                                 "PRODUCT_XML_ID" => $arItem["XML_ID"],
                                 "MODULE" => "catalog",
                                 "NOTES" => "",
-                                "PRODUCT_PROVIDER_CLASS" => "\kDevelop\Service\CatalogProductProvider",
+                                //"PRODUCT_PROVIDER_CLASS" => "\kDevelop\Service\CatalogProductProvider",
                                 //"IGNORE_CALLBACK_FUNC" => "",
                                 //"DISCOUNT_PRICE" => $arPrice["RESULT_PRICE"]["DISCOUNT"],
                                 //"DISCOUNT_NAME" => $arPrice["DISCOUNT"]["NAME"],

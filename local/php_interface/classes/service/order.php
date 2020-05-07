@@ -136,6 +136,9 @@ class Order
                 try {
                     $refund = $resultPaySystem->refund($resultPayment, (int) ($orderSumPaid - $orderSum));
                     $resultPayment->setField('PS_SUM', $orderSum);
+                    \Bitrix\Sale\OrderTable::update($order->getId(), [
+                        'SUM_PAID' => $orderSum,
+                    ]);
                 } catch (Throwable $ex) {
                     AddMessage2Log([
                         'exception' => $ex->getMessage(),

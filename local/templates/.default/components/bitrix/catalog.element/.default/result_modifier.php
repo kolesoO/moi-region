@@ -51,6 +51,29 @@ if ($arResult["PROPERTIES"]["MORE_PHOTO"]["VALUE"]) {
 $arResult["PROPERTIES"]["MORE_PHOTO"]["VALUE"] = $arPhoto;
 //end
 
+//цена
+$initPrice = $arResult["PRICES"][$arParams["PRICE_CODE"][0]];
+$discountPrice = \kDevelop\Service\Catalog::getPriceByWeight(
+    (int) $arResult['PRODUCT']['MEASURE'],
+    (float) $arResult['PRODUCT']['WEIGHT'],
+    (float) $initPrice['DISCOUNT_VALUE']
+);
+$fullPrice = \kDevelop\Service\Catalog::getPriceByWeight(
+    (int) $arResult['PRODUCT']['MEASURE'],
+    (float) $arResult['PRODUCT']['WEIGHT'],
+    (float) $initPrice['VALUE']
+);
+$arResult["PRICES"][$arParams["PRICE_CODE"][0]] = array_merge(
+    $arResult["PRICES"][$arParams["PRICE_CODE"][0]],
+    [
+        'VALUE' => $fullPrice['value'],
+        'PRINT_VALUE' => $fullPrice['formatted'],
+        'DISCOUNT_VALUE' => $discountPrice['value'],
+        'PRINT_DISCOUNT_VALUE' => $discountPrice['formatted'],
+    ]
+);
+//end
+
 $cp = $this->__component;
 if (is_object($cp)) {
     $cp->SetResultCacheKeys([]);

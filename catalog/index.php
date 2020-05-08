@@ -26,7 +26,7 @@ $APPLICATION->IncludeComponent(
         "TEMPLATE_THEME" => "blue",
         "IBLOCK_TYPE" => "1c_catalog",
         "IBLOCK_ID" => IBLOCK_1C_CATALOG_CATALOG,
-        "HIDE_NOT_AVAILABLE" => "N",
+        "HIDE_NOT_AVAILABLE" => "Y",
         "BASKET_URL" => "/personal/cart/",
         "ACTION_VARIABLE" => "action",
         "PRODUCT_ID_VARIABLE" => "id",

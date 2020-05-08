@@ -1872,8 +1872,10 @@
 					}
 				}
 			}
+			console.log(quantity);
 
 			quantity = isQuantityFloat ? parseFloat(quantity) : parseInt(quantity, 10);
+			console.log(quantity);
 
 			return quantity;
 		},

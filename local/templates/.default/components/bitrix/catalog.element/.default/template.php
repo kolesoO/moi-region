@@ -59,26 +59,32 @@ if ($arParams['DISPLAY_COMPARE']) {
             <?if (strlen($arResult['DETAIL_TEXT']) > 0) :?>
                 <div class="card-body bg-success text-white mb-4"><?=htmlspecialcharsback($arResult['DETAIL_TEXT'])?></div>
             <?endif?>
-            <div class="row align-items-center">
-                <div class="col-lg-6 col-md-8">
-                    <?if ($arPrice['DISCOUNT_DIFF'] > 0) :?>
-                        <s class="text-secondary"><?=$arPrice['PRINT_VALUE']?></s>
-                    <?endif?>
-                    <div class="h4"> <?=$arPrice['PRINT_DISCOUNT_VALUE']?></div>
+            <?if ($arResult['PRODUCT']['AVAILABLE'] == 'Y') :?>
+                <div class="row align-items-center">
+                    <div class="col-lg-6 col-md-8">
+                        <?if ($arPrice['DISCOUNT_DIFF'] > 0) :?>
+                            <s class="text-secondary"><?=$arPrice['PRINT_VALUE']?></s>
+                        <?endif?>
+                        <div class="h4"> <?=$arPrice['PRINT_DISCOUNT_VALUE']?></div>
+                        <?if ($arResult['PRODUCT']['WEIGHT'] > 0) :?>
+                            <div class="text-secondary">цена за <?=$arResult['PRODUCT']['WEIGHT']?> грамм</div>
+                        <?endif?>
+                    </div>
+                    <div class="col-lg-6 col-md-4">
+                        <input type="number" class="form-control js-qnt" min="1" max="100" value="1">
+                    </div>
                 </div>
-                <div class="col-lg-6 col-md-4">
-                    <input type="number" class="form-control" min="1" max="100" value="1">
+                <div class="mt-4">
+                    <a
+                            class="btn btn-success text-white w-100"
+                            data-qnt-target=".js-qnt"
+                            onclick="obAjax.addToBasket('<?=$arResult["ID"]?>', '<?=$arPrice["PRICE_ID"]?>', event)"
+                    >
+                        <i class="fas fa-cart-arrow-down"></i>
+                        <span><?=$arParams["MESS_BTN_ADD_TO_BASKET"]?></span>
+                    </a>
                 </div>
-            </div>
-            <div class="mt-4">
-                <button
-                        class="btn btn-success text-white w-100"
-                        onclick="obAjax.addToBasket('<?=$arResult["ID"]?>', '<?=$arPrice["PRICE_ID"]?>', event)"
-                >
-                    <i class="fas fa-cart-arrow-down"></i>
-                    <span><?=$arParams["MESS_BTN_ADD_TO_BASKET"]?></span>
-                </button>
-            </div>
+            <?endif?>
         </div>
     </div>
 </div>

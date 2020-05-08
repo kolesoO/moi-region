@@ -685,7 +685,7 @@ else
 
                 foreach ($data['Контейнер'] as $container) {
                     try {
-                        $doc = $container['Документ'];
+                        $doc = isset($container['Документ']) ? $container['Документ'] : $container;
                         $order = \Bitrix\Sale\Order::load((int) $doc['Ид']);
                         if (is_null($order)) continue;
 

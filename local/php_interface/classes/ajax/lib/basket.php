@@ -1,6 +1,8 @@
 <?
 namespace kDevelop\Ajax;
 
+use kDevelop\Service\Catalog;
+
 class Basket
 {
     use MsgHandBook;
@@ -62,12 +64,25 @@ class Basket
                             );
                             //end
 
+                            //update price by weight
+                            $discountPrice = Catalog::getPriceByWeight(
+                                (int) $arItem['CATALOG_MEASURE'],
+                                (float) $arItem['CATALOG_WEIGHT'],
+                                (float) $arPrice["RESULT_PRICE"]["DISCOUNT_PRICE"]
+                            );
+                            $fullPrice = Catalog::getPriceByWeight(
+                                (int) $arItem['CATALOG_MEASURE'],
+                                (float) $arItem['CATALOG_WEIGHT'],
+                                (float) $arPrice["RESULT_PRICE"]["BASE_PRICE"]
+                            );
+                            //end
+
                             if ($basketId = \CSaleBasket::Add([
                                 "PRODUCT_ID" => $arItem["ID"],
                                 "PRODUCT_PRICE_ID" => $arPrice["PRICE"]["ID"],
                                 "PRICE_TYPE_ID" => $arPrice["RESULT_PRICE"]["PRICE_TYPE_ID"],
-                                "PRICE" => $arPrice["RESULT_PRICE"]["DISCOUNT_PRICE"],
-                                "BASE_PRICE" => $arPrice["RESULT_PRICE"]["BASE_PRICE"],
+                                "PRICE" => $discountPrice['value'],
+                                "BASE_PRICE" => $fullPrice['value'],
                                 "CUSTOM_PRICE" => "Y",
                                 "CURRENCY" => "RUB",
                                 "WEIGHT" => $arItem["CATALOG_WEIGHT"],
@@ -79,7 +94,7 @@ class Basket
                                 "PRODUCT_XML_ID" => $arItem["XML_ID"],
                                 "MODULE" => "catalog",
                                 "NOTES" => "",
-                                //"PRODUCT_PROVIDER_CLASS" => "\kDevelop\Service\CatalogProductProvider",
+                                "PRODUCT_PROVIDER_CLASS" => "\kDevelop\Service\CatalogProductProvider",
                                 //"IGNORE_CALLBACK_FUNC" => "",
                                 //"DISCOUNT_PRICE" => $arPrice["RESULT_PRICE"]["DISCOUNT"],
                                 //"DISCOUNT_NAME" => $arPrice["DISCOUNT"]["NAME"],

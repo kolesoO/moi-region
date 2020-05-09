@@ -59,6 +59,9 @@ if ($arParams['DISPLAY_COMPARE']) {
             <?if (strlen($arResult['DETAIL_TEXT']) > 0) :?>
                 <div class="card-body bg-success text-white mb-4"><?=htmlspecialcharsback($arResult['DETAIL_TEXT'])?></div>
             <?endif?>
+            <?if ($arResult['PRODUCT']['WEIGHT'] > 0) :?>
+                <div class="card-body bg-success text-white mb-4">Вес - <?=$arResult['PRODUCT']['WEIGHT']?> грамм</div>
+            <?endif?>
             <?if ($arResult['PRODUCT']['AVAILABLE'] == 'Y') :?>
                 <div class="row align-items-center">
                     <div class="col-lg-6 col-md-8">
@@ -66,12 +69,15 @@ if ($arParams['DISPLAY_COMPARE']) {
                             <s class="text-secondary"><?=$arPrice['PRINT_VALUE']?></s>
                         <?endif?>
                         <div class="h4"> <?=$arPrice['PRINT_DISCOUNT_VALUE']?></div>
-                        <?if ($arResult['PRODUCT']['WEIGHT'] > 0) :?>
-                            <div class="text-secondary">цена за <?=$arResult['PRODUCT']['WEIGHT']?> грамм</div>
-                        <?endif?>
+                        <div class="text-secondary">цена за <?=$arResult['CATALOG_MEASURE_RATIO'] . ' ' . $arResult['ITEM_MEASURE']['TITLE']?></div>
                     </div>
                     <div class="col-lg-6 col-md-4">
-                        <input type="number" class="form-control js-qnt" min="1" max="100" value="1">
+                        <div class="d-flex align-items-center">
+                            <div class="col-9">
+                                <input type="text" class="form-control js-qnt" min="1" max="100" value="1">
+                            </div>
+                            <span class="col-3 text-secondary"><?=$arResult['ITEM_MEASURE']['TITLE']?></span>
+                        </div>
                     </div>
                 </div>
                 <div class="mt-4">

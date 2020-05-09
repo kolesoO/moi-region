@@ -22,7 +22,7 @@ class Basket
                 if (\Bitrix\Main\Loader::includeModule("sale")) {
 
                     //qnt
-                    $arParams["qnt"] = intval($arParams["qnt"]);
+                    $arParams["qnt"] = floatval($arParams["qnt"]);
                     if ($arParams["qnt"] == 0) {
                         $arParams["qnt"] = 1;
                     }
@@ -81,12 +81,12 @@ class Basket
                                 "PRODUCT_ID" => $arItem["ID"],
                                 "PRODUCT_PRICE_ID" => $arPrice["PRICE"]["ID"],
                                 "PRICE_TYPE_ID" => $arPrice["RESULT_PRICE"]["PRICE_TYPE_ID"],
-                                "PRICE" => $discountPrice['value'],
-                                "BASE_PRICE" => $fullPrice['value'],
+                                "PRICE" => $arPrice["RESULT_PRICE"]["DISCOUNT_PRICE"],
+                                "BASE_PRICE" => $arPrice["RESULT_PRICE"]["BASE_PRICE"],
                                 "CUSTOM_PRICE" => "Y",
                                 "CURRENCY" => "RUB",
                                 "WEIGHT" => $arItem["CATALOG_WEIGHT"],
-                                "QUANTITY" => $arParams["qnt"],
+                                "QUANTITY" => $arParams["qnt"], //кол-во реальных кг
                                 "LID" => SITE_ID,
                                 "DELAY" => "N",
                                 "CAN_BUY" => "Y",
@@ -94,7 +94,7 @@ class Basket
                                 "PRODUCT_XML_ID" => $arItem["XML_ID"],
                                 "MODULE" => "catalog",
                                 "NOTES" => "",
-                                "PRODUCT_PROVIDER_CLASS" => "\kDevelop\Service\CatalogProductProvider",
+                                //"PRODUCT_PROVIDER_CLASS" => "\kDevelop\Service\CatalogProductProvider",
                                 //"IGNORE_CALLBACK_FUNC" => "",
                                 //"DISCOUNT_PRICE" => $arPrice["RESULT_PRICE"]["DISCOUNT"],
                                 //"DISCOUNT_NAME" => $arPrice["DISCOUNT"]["NAME"],

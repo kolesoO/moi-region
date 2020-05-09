@@ -27,13 +27,8 @@
                         style="background-image:url('{{{IMAGE_URL}}}{{^IMAGE_URL}}<?=SITE_TEMPLATE_PATH?>/images/no-image.png{{/IMAGE_URL}}')"
                 ></a>
             </div>
-            <div class="col-lg-3 col-md-7 col-7 mb-lg-0 mb-4">
+            <div class="col-lg-2 col-md-7 col-7 mb-lg-0 mb-4">
                 <a href="#" class="h6 text-success text-decoration-none">{{NAME}}</a>
-                <div class="text-secondary mt-2">
-                    <div><small>Параметр товара:  1 кг</small></div>
-                    <div><small>Параметр товара:  1 кг</small></div>
-                    <div><small>Параметр товара:  1 кг</small></div>
-                </div>
             </div>
             <div class="col-lg-2 col-md-4 col-4 align-self-lg-auto align-self-center">
                 {{#SHOW_DISCOUNT_PRICE}}
@@ -42,18 +37,25 @@
                     </small>
                 {{/SHOW_DISCOUNT_PRICE}}
                 <div id="basket-item-price-{{ID}}" class="h6 mb-0">{{{PRICE_FORMATED}}}</div>
+                <small class="text-secondary">цена за {{{MEASURE_RATIO}}} {{{MEASURE_TEXT}}}</small>
             </div>
             <div
                     data-entity="basket-item-quantity-block"
-                    class="col-lg-2 col-md-4 col-4 align-self-lg-auto align-self-center">
-                <input
-                        id="basket-item-quantity-{{ID}}"
-                        type="number"
-                        class="form-control w-100"
-                        value="{{QUANTITY}}"
-                        data-value="{{QUANTITY}}"
-                        data-entity="basket-item-quantity-field"
-                >
+                    class="col-lg-3 col-md-4 col-4 align-self-lg-auto align-self-center"
+            >
+                <div class="d-flex align-items-center">
+                    <div class="col-9">
+                        <input
+                                id="basket-item-quantity-{{ID}}"
+                                type="number"
+                                class="form-control w-100"
+                                value="{{QUANTITY}}"
+                                data-value="{{QUANTITY}}"
+                                data-entity="basket-item-quantity-field"
+                        >
+                    </div>
+                    <span class="text-secondary">{{{MEASURE_TEXT}}}</span>
+                </div>
             </div>
             <div class="col-lg-3 col-md-4 col-4 align-self-lg-auto align-self-center">
                 {{#SHOW_DISCOUNT_PRICE}}

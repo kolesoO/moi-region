@@ -316,7 +316,7 @@ $rsAsset->addJs(SITE_TEMPLATE_PATH.'/libs/baguetteBox/1.10.0/baguetteBox.min.js'
                 "ELEMENT_SORT_ORDER2" => "desc",
                 "ENLARGE_PRODUCT" => "STRICT",
                 "FILTER_NAME" => "arCatalogTopFilter",
-                "HIDE_NOT_AVAILABLE" => "N",
+                "HIDE_NOT_AVAILABLE" => "Y",
                 "HIDE_NOT_AVAILABLE_OFFERS" => "N",
                 "IBLOCK_ID" => IBLOCK_1C_CATALOG_CATALOG,
                 "IBLOCK_TYPE" => "1c_catalog",

@@ -23,9 +23,6 @@ class Basket
 
                     //qnt
                     $arParams["qnt"] = floatval($arParams["qnt"]);
-                    if ($arParams["qnt"] == 0) {
-                        $arParams["qnt"] = 1;
-                    }
                     //end
 
                     $rsItem = \CIBlockElement::GetList(
@@ -47,6 +44,24 @@ class Basket
                                 continue;
                             }
 
+                            //qnt
+                            if ($arParams["qnt"] == 0) {
+                                $rsRatio = \CCatalogMeasureRatio::getList(
+                                    [],
+                                    ['PRODUCT_ID' => $arItem['ID']],
+                                    false,
+                                    false,
+                                    []
+                                );
+                                if ($ratio = $rsRatio->fetch()) {
+                                    $arParams["qnt"] = $ratio['RATIO'];
+                                } else {
+                                    $arReturn["msg"] = self::getMsg("NO_RATIO");
+                                    break;
+                                }
+                            }
+                            //end
+
                             //general price info
                             $arPrice = \CCatalogProduct::GetOptimalPrice(
                                 $arItem["ID"],
@@ -61,19 +76,6 @@ class Basket
                                         "CATALOG_GROUP_ID" => $arParams["price_id"]
                                     ]
                                 ]
-                            );
-                            //end
-
-                            //update price by weight
-                            $discountPrice = Catalog::getPriceByWeight(
-                                (int) $arItem['CATALOG_MEASURE'],
-                                (float) $arItem['CATALOG_WEIGHT'],
-                                (float) $arPrice["RESULT_PRICE"]["DISCOUNT_PRICE"]
-                            );
-                            $fullPrice = Catalog::getPriceByWeight(
-                                (int) $arItem['CATALOG_MEASURE'],
-                                (float) $arItem['CATALOG_WEIGHT'],
-                                (float) $arPrice["RESULT_PRICE"]["BASE_PRICE"]
                             );
                             //end
 

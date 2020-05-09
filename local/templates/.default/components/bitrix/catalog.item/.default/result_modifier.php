@@ -19,26 +19,26 @@ $this->setFrameMode(true);
 $arResult["OFFER"] = $arResult["ITEM"];
 
 //цены
-$initPrice = $arResult["OFFER"]['ITEM_PRICES'][0];
-$discountPrice = \kDevelop\Service\Catalog::getPriceByWeight(
-    (int) $arResult["OFFER"]['PRODUCT']['MEASURE'],
-    (float) $arResult["OFFER"]['PRODUCT']['WEIGHT'],
-    (float) $initPrice['PRICE']
-);
-$fullPrice = \kDevelop\Service\Catalog::getPriceByWeight(
-    (int) $arResult["OFFER"]['PRODUCT']['MEASURE'],
-    (float) $arResult["OFFER"]['PRODUCT']['WEIGHT'],
-    (float) $initPrice['BASE_PRICE']
-);
-$arResult["OFFER"]["ITEM_PRICES"][0] = array_merge(
-    $arResult["OFFER"]["ITEM_PRICES"][0],
-    [
-        'PRICE' => $discountPrice['value'],
-        'PRINT_PRICE' => $discountPrice['formatted'],
-        'BASE_PRICE' => $fullPrice['value'],
-        'PRINT_BASE_PRICE' => $fullPrice['formatted'],
-    ]
-);
+//$initPrice = $arResult["OFFER"]['ITEM_PRICES'][0];
+//$discountPrice = \kDevelop\Service\Catalog::getPriceByWeight(
+//    (int) $arResult["OFFER"]['PRODUCT']['MEASURE'],
+//    (float) $arResult["OFFER"]['PRODUCT']['WEIGHT'],
+//    (float) $initPrice['PRICE']
+//);
+//$fullPrice = \kDevelop\Service\Catalog::getPriceByWeight(
+//    (int) $arResult["OFFER"]['PRODUCT']['MEASURE'],
+//    (float) $arResult["OFFER"]['PRODUCT']['WEIGHT'],
+//    (float) $initPrice['BASE_PRICE']
+//);
+//$arResult["OFFER"]["ITEM_PRICES"][0] = array_merge(
+//    $arResult["OFFER"]["ITEM_PRICES"][0],
+//    [
+//        'PRICE' => $discountPrice['value'],
+//        'PRINT_PRICE' => $discountPrice['formatted'],
+//        'BASE_PRICE' => $fullPrice['value'],
+//        'PRINT_BASE_PRICE' => $fullPrice['formatted'],
+//    ]
+//);
 //end
 
 $cp = $this->__component;

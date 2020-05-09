@@ -48,6 +48,7 @@
                         <input
                                 id="basket-item-quantity-{{ID}}"
                                 type="number"
+                                step="{{{MEASURE_RATIO}}}"
                                 class="form-control w-100"
                                 value="{{QUANTITY}}"
                                 data-value="{{QUANTITY}}"

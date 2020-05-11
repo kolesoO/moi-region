@@ -163,13 +163,15 @@ class Order
             foreach ($basket as $basketItem) {
                 /** @var Shipment $item */
                 foreach ($shipment as $item) {
+
+                    if ($item->isSystem()) continue;
+
                     $shipmentItems = $item->getShipmentItemCollection()->getItemByBasketCode(
                         $basketItem->getId()
                     );
 
                     if (is_null($shipmentItems)) continue;
 
-                    $shipmentItems->setField('SYSTEM', 'N');
                     $shipmentItems->setQuantity(
                         $basketItem->getQuantity()
                     );
@@ -181,13 +183,15 @@ class Order
 
             if (count($updateShipmentItems) > 0) {
                 foreach ($shipment as $item) {
+
+                    if ($item->isSystem()) continue;
+
                     $shipmentItems = $item->getShipmentItemCollection();
 
                     /** @var ShipmentItem $shipmentItem */
                     foreach ($shipmentItems as $shipmentItem) {
                         if (in_array($shipmentItem->getId(), $updateShipmentItems)) continue;
 
-                        $shipmentItem->setField('SYSTEM', 'N');
                         $shipmentItem->delete();
                     }
                 }

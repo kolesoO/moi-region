@@ -169,10 +169,12 @@ class Order
 
                     if (is_null($shipmentItems)) continue;
 
+                    $shipmentItems->setField('SYSTEM', 'N');
                     $shipmentItems->setQuantity(
                         $basketItem->getQuantity()
                     );
                     $shipmentItems->save();
+
                     $updateShipmentItems[] = $shipmentItems->getId();
                 }
             }
@@ -185,6 +187,7 @@ class Order
                     foreach ($shipmentItems as $shipmentItem) {
                         if (in_array($shipmentItem->getId(), $updateShipmentItems)) continue;
 
+                        $shipmentItem->setField('SYSTEM', 'N');
                         $shipmentItem->delete();
                     }
                 }

@@ -22,16 +22,30 @@ class Catalog
     public static function getPriceByWeight(int $measureId, float $weight, float $price): array
     {
         if ($weight > 0) {
-            if ($measureId === self::KG_CAT_MEASURE) {
-                $price = $price * $weight/1000;
-            } elseif ($measureId === self::G_CAT_MEASURE) {
-                $price = $price * $weight;
-            }
+            $price = $price * $weight/self::getMeasureKoef($measureId);
         }
 
         return [
             'value' => $price,
             'formatted' => CurrencyFormat($price, 'RUB'),
         ];
+    }
+
+    /**
+     * @param int $measureId
+     * @return bool
+     */
+    public static function isWeightMeasure(int $measureId): bool
+    {
+        return in_array($measureId, [self::G_CAT_MEASURE, self::KG_CAT_MEASURE]);
+    }
+
+    /**
+     * @param int $measureId
+     * @return int
+     */
+    public static function getMeasureKoef(int $measureId): int
+    {
+        return $measureId === self::KG_CAT_MEASURE ? 1000 : 1;
     }
 }

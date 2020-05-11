@@ -28,20 +28,16 @@ Loader::registerAutoLoadClasses(null, [
 //Обработчики событий
 if (strpos($APPLICATION->GetCurDir(), "/bitrix/admin") === false) {
 
-    //main module
     $rsManager->addEventHandler("main", "OnProlog", [Tools::class, "setDeviceType"], false, 100);
     $rsManager->addEventHandler("main", "OnProlog", [Store::class, "setStore"], false, 200);
     $rsManager->addEventHandler("main", "OnProlog", [Tools::class, "defineAjax"], false, 300);
     $rsManager->addEventHandler("main", "OnBeforeUserAdd", [User::class, "OnBeforeUserAddHandler"], false, 100);
     $rsManager->addEventHandler("main", "OnSendUserInfo", [User::class, "OnSendUserInfoHandler"], false, 100);
-    //end
 
-    //module sale
     $rsManager->addEventHandler("sale", "OnOrderNewSendEmail", [Order::class, "OnOrderNewSendEmailHandler"], false, 100);
-    //end
 
     Tools::definders();
 }
 
-$rsManager->addEventHandler("sale", "OnOrderUpdate", [Order::class, "OnOrderUpdateHandler"], false, 300);
+$rsManager->addEventHandler("sale", "OnOrderUpdate", [Order::class, "OnOrderUpdateHandler"], false, 200);
 //end

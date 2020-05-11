@@ -8,6 +8,7 @@ use Bitrix\Main\ArgumentException;
 use Bitrix\Main\ArgumentNullException;
 use Bitrix\Main\ArgumentOutOfRangeException;
 use Bitrix\Main\NotImplementedException;
+use Bitrix\Sale\OrderTable;
 use Bitrix\Sale\Payment;
 use Bitrix\Sale\PaySystem\Service;
 use CEvent;
@@ -132,11 +133,10 @@ class Order
             $orderSumPaid = $resultPayment->getSumPaid();
 
             if ($orderSumPaid > $orderSum) {
-                $resultPayment->setField('SUM', $orderSum);
                 try {
                     $refund = $resultPaySystem->refund($resultPayment, (int) ($orderSumPaid - $orderSum));
                     $resultPayment->setField('PS_SUM', $orderSum);
-                    \Bitrix\Sale\OrderTable::update($order->getId(), [
+                    OrderTable::update($order->getId(), [
                         'SUM_PAID' => $orderSum,
                     ]);
                 } catch (Throwable $ex) {
@@ -145,6 +145,9 @@ class Order
                     ]);
                 }
             }
+
+            $resultPayment->setField('SUM', $orderSum);
+            $resultPayment->save();
 
             $order->setField('STATUS_ID', self::FINALLY_PAYED_STATUS);
             $order->save();

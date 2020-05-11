@@ -8,9 +8,12 @@ use Bitrix\Main\ArgumentException;
 use Bitrix\Main\ArgumentNullException;
 use Bitrix\Main\ArgumentOutOfRangeException;
 use Bitrix\Main\NotImplementedException;
+use Bitrix\Sale\BasketItem;
 use Bitrix\Sale\OrderTable;
 use Bitrix\Sale\Payment;
 use Bitrix\Sale\PaySystem\Service;
+use Bitrix\Sale\Shipment;
+use Bitrix\Sale\ShipmentItem;
 use CEvent;
 use Throwable;
 
@@ -129,6 +132,7 @@ class Order
             } catch (Throwable $exception) {
             }
 
+            //payment
             $orderSum = $order->getPrice();
             $orderSumPaid = $resultPayment->getSumPaid();
 
@@ -148,6 +152,44 @@ class Order
 
             $resultPayment->setField('SUM', $orderSum);
             $resultPayment->save();
+            //end
+
+            //shipment
+            $shipment = $order->getShipmentCollection();
+            $basket = $order->getBasket();
+            $updateShipmentItems = [];
+
+            /** @var BasketItem $basketItem */
+            foreach ($basket as $basketItem) {
+                /** @var Shipment $item */
+                foreach ($shipment as $item) {
+                    $shipmentItems = $item->getShipmentItemCollection()->getItemByBasketCode(
+                        $basketItem->getId()
+                    );
+
+                    if (is_null($shipmentItems)) continue;
+
+                    $shipmentItems->setQuantity(
+                        $basketItem->getQuantity()
+                    );
+                    $shipmentItems->save();
+                    $updateShipmentItems[] = $shipmentItems->getId();
+                }
+            }
+
+            if (count($updateShipmentItems) > 0) {
+                foreach ($shipment as $item) {
+                    $shipmentItems = $item->getShipmentItemCollection();
+
+                    /** @var ShipmentItem $shipmentItem */
+                    foreach ($shipmentItems as $shipmentItem) {
+                        if (in_array($shipmentItem->getId(), $updateShipmentItems)) continue;
+
+                        $shipmentItem->delete();
+                    }
+                }
+            }
+            //end
 
             $order->setField('STATUS_ID', self::FINALLY_PAYED_STATUS);
             $order->save();

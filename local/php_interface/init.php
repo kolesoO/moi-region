@@ -5,6 +5,7 @@
 
 use Bitrix\Main;
 use Bitrix\Main\Loader;
+Use kDevelop\Service\Catalog;
 use kDevelop\Service\Order;
 use kDevelop\Service\User;
 use kDevelop\Help\Tools;
@@ -39,5 +40,7 @@ if (strpos($APPLICATION->GetCurDir(), "/bitrix/admin") === false) {
     Tools::definders();
 }
 
-$rsManager->addEventHandler("sale", "OnOrderUpdate", [Order::class, "OnOrderUpdateHandler"], false, 200);
+$rsManager->addEventHandler("sale", "OnOrderUpdate", [Order::class, "OnOrderUpdateHandler"], false, 100);
+
+$rsManager->addEventHandler("catalog", "OnSuccessCatalogImport1C", [Catalog::class, "updateRatio"], false, 100);
 //end

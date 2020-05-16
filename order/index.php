@@ -10,6 +10,9 @@ $APPLICATION->SetTitle('Оформление заказа');
 $APPLICATION->SetPageProperty('description', '');
 $APPLICATION->SetPageProperty('keywords', '');
 
+$APPLICATION->AddChainItem('Корзина', '/basket/');
+$APPLICATION->AddChainItem('Оформление заказа', '/order/');
+
 $APPLICATION->IncludeComponent(
     "bitrix:sale.order.ajax",
     '',

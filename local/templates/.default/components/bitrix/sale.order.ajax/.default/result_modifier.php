@@ -1,4 +1,6 @@
-<? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
+<? use Bitrix\Main\Config\Option;
+
+if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 
 /**
  * @var array $arParams
@@ -7,10 +9,21 @@
  */
 
 global $USER_FIELD_MANAGER;
+global $APPLICATION;
 
 $component = $this->__component;
 $component::scaleImages($arResult['JS_DATA'], $arParams['SERVICES_IMAGES_SCALING']);
 
+//schedule component
+$class = CBitrixComponent::includeComponentClass('kDevelop:schedule');
+
+/** @var Schedule $scheduleInstance */
+$scheduleInstance = new $class();
+
+$scheduleInstance->arParams = $scheduleInstance->onPrepareComponentParams(['IBLOCK_ID' => IBLOCK_DELIVERY_SCHEDULE]);
+//end
+
+$arResult['ORDER_MIN_PRICE'] = Option::get('imyie.orderminprice', 'min_price', 0);
 $arResult["PERSON_TYPE_COUNT"] = count($arResult["PERSON_TYPE"]);
 $arResult["DELIVERY_COUNT"] = count($arResult["DELIVERY"]);
 $arResult["PAY_SYSTEM_COUNT"] = count($arResult["PAY_SYSTEM"]);
@@ -38,6 +51,7 @@ unset($group);
 foreach ($arResult["ORDER_PROP"]["USER_PROPS_N"] as &$arProp) {
     $groupId = $groupKeys[$arProp['PROPS_GROUP_ID']];
     $arResult['JS_DATA']['ORDER_PROP']['groups'][$groupId]['PROPS_COUNT'] ++;
+
     if (isset($_REQUEST[$arProp['FIELD_NAME']])) {
         $arProp['VALUE'] = $_REQUEST[$arProp['FIELD_NAME']];
     }
@@ -47,8 +61,17 @@ unset($arProp);
 foreach ($arResult["ORDER_PROP"]["RELATED"] as &$arProp) {
     $groupId = $groupKeys[$arProp['PROPS_GROUP_ID']];
     $arResult['JS_DATA']['ORDER_PROP']['groups'][$groupId]['RELATED_PROPS_COUNT'] ++;
+
     if (isset($_REQUEST[$arProp['FIELD_NAME']])) {
         $arProp['VALUE'] = $_REQUEST[$arProp['FIELD_NAME']];
     }
+
+    //delivery date
+    if ($arProp['CODE'] == 'DELIVERY_DATE') {
+        $delivery = $scheduleInstance->getForOrder();
+        $arProp['VALUE'] = $delivery['DATE'] . ' ' . $delivery['TIME'];
+    }
+    //end
+
 }
 unset($arProp);

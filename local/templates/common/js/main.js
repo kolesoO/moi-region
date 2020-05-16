@@ -27,6 +27,12 @@ $(document).ready(function() {
     });
     //end
 
+    //iframe
+    $('iframe').each(function () {
+        $(this).wrap('<div class="iframe-wrapper"></div>');
+    });
+    //end
+
     //plugins
     $('.dropdown-toggle').dropdown();
 

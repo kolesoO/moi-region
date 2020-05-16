@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace kDevelop\Service;
 
-/**
- * Class Order
- */
 class Catalog
 {
     protected const G_CAT_MEASURE = 3; //г
@@ -47,5 +44,10 @@ class Catalog
     public static function getMeasureKoef(int $measureId): int
     {
         return $measureId === self::KG_CAT_MEASURE ? 1000 : 1;
+    }
+
+    public static function updateRatio(): void
+    {
+        shell_exec('php ' . $_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/console/update_ratio.php');
     }
 }

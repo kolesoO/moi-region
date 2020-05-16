@@ -197,17 +197,11 @@ $rsAsset->addJs(SITE_TEMPLATE_PATH.'/js/main.js');
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-5 col-12 mt-lg-0 mt-md-0 mt-3">
-                        <div class="alert alert-secondary mb-0">
-                            <?$APPLICATION->IncludeComponent(
-                                "bitrix:main.include",
-                                ".default",
-                                [
-                                    "AREA_FILE_SHOW" => "file",
-                                    "PATH" => SITE_TEMPLATE_PATH . "/include/index/alert.php"
-                                ],
-                                false
-                            );?>
-                        </div>
+                        <?$APPLICATION->IncludeComponent(
+                            'kDevelop:schedule',
+                            'alert',
+                            ['IBLOCK_ID' => IBLOCK_DELIVERY_SCHEDULE]
+                        );?>
                     </div>
                 </div>
             </div>

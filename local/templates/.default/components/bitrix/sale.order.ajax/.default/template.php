@@ -316,6 +316,9 @@ else
             }?>
             <div class="row">
                 <div class="col-lg-8 col-md-7 col-12 mb-n3">
+                    <?if ($arResult['ORDER_MIN_PRICE'] > 0) :?>
+                        <div class="alert alert-secondary">Минимальная сумма заказа <b><?=CurrencyFormat($arResult['ORDER_MIN_PRICE'], 'RUB')?></b></div>
+                    <?endif?>
                     <?if (!empty($arResult["ERROR"])) :?>
                         <div class="card-body bg-white border mb-3 shadow">
                             <label class="h5 mb-4 text-danger">Ошибки формирования заказа</label>

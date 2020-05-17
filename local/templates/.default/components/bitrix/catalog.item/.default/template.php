@@ -47,7 +47,7 @@ if ($arParams['DISPLAY_COMPARE']) {
                         onclick="obAjax.addToBasket('<?=$arResult["OFFER"]["ID"]?>', '<?=$arPrice["PRICE_TYPE_ID"]?>', event)"
                 >
                     <i class="fas fa-cart-arrow-down"></i>
-                    <span><?=$arPrice["PRINT_PRICE"]?></span>
+                    <span><?=$arPrice["PRINT_PRICE"] . ' / ' . $arResult["ITEM"]['ITEM_MEASURE']['TITLE']?></span>
                 </a>
             </div>
         <?endif?>

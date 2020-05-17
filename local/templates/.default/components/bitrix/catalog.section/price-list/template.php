@@ -18,6 +18,7 @@ $this->setFrameMode(true);
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Товар</th>
+                <th scope="col">Доступное количество</th>
                 <th scope="col">Стоимость</th>
             </tr>
         </thead>
@@ -28,6 +29,7 @@ $this->setFrameMode(true);
                 <tr>
                     <th scope="row"><?=($key + 1)?></th>
                     <td><?=$arItem['NAME']?></td>
+                    <td><?=$arItem['PRODUCT']['QUANTITY'] . ' ' . $arItem['ITEM_MEASURE']['TITLE']?></td>
                     <td><?=$arPrice["PRINT_BASE_PRICE"]?></td>
                 </tr>
             <?endforeach;?>

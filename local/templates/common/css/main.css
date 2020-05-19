@@ -220,6 +220,16 @@ a.text-hover-white:hover{
     top: 5px;
     right: 10px;
 }
+@media (max-width: 767px) {
+    .close_wrap{
+        background-color: #f8f9fa;
+        padding: 10px 15px;
+        line-height: 1;
+        z-index: 10;
+        top: 0;
+        right: 0;
+    }
+}
 .banner-bg{
     background-image: url('../images/banner-bg.jpg');
     background-repeat: no-repeat;

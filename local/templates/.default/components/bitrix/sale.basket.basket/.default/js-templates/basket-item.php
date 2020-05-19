@@ -30,7 +30,7 @@
             <div class="col-lg-2 col-md-7 col-7 mb-lg-0 mb-4">
                 <a href="#" class="h6 text-success text-decoration-none">{{NAME}}</a>
             </div>
-            <div class="col-lg-2 col-md-4 col-4 align-self-lg-auto align-self-center">
+            <div class="col-lg-2 col-md-6 col-6 align-self-lg-auto align-self-center mt-3 mt-lg-0">
                 {{#SHOW_DISCOUNT_PRICE}}
                     <small class="text-secondary">
                         <s>{{{FULL_PRICE_FORMATED}}}</s>
@@ -41,7 +41,7 @@
             </div>
             <div
                     data-entity="basket-item-quantity-block"
-                    class="col-lg-3 col-md-4 col-4 align-self-lg-auto align-self-center"
+                    class="col-lg-3 col-md-6 col-6 align-self-lg-auto align-self-center"
             >
                 <div class="d-flex align-items-center">
                     <div class="col-9">
@@ -58,7 +58,7 @@
                     <span class="text-secondary">{{{MEASURE_TEXT}}}</span>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-4 col-4 align-self-lg-auto align-self-center">
+            <div class="col-lg-3 col-md-12 col-12 mt-4 mt-lg-0 align-self-lg-auto align-self-center">
                 {{#SHOW_DISCOUNT_PRICE}}
                     <small class="text-secondary">
                         <s>{{{SUM_FULL_PRICE_FORMATED}}}</s>

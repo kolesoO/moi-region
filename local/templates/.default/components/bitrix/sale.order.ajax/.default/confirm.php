@@ -76,8 +76,6 @@ if ($arParams["SET_TITLE"] == "Y") {
                     </tr>
                 </table>
             <?endforeach?>
-        <?elseif ($arResult['ORDER']['STATUS_ID'] != 'C') :?>
-            <p><?=Loc::getMessage("PAY_SYSTEM_PAYABLE_ERROR_DEFAULT")?></p>
         <?endif?>
     <?elseif (!$USER->IsAuthorized()) :?>
         <span><?=Loc::getMessage("STOF_AUTH_REQUEST")?></span>

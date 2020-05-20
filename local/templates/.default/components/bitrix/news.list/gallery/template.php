@@ -1,7 +1,7 @@
 <?if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();?>
 
 <?if ($arResult["ITEMS_COUNT"] > 0) :?>
-    <div class="gallery-block compact-gallery js-compact-gallery">
+    <div class="gallery-block compact-gallery mb-3 js-compact-gallery">
         <div class="row no-gutters">
             <?foreach ($arResult["ITEMS"] as $key => $arItem) :
                 $this->AddEditAction($arItem['ID'], $arItem['EDIT_LINK'], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_EDIT"));

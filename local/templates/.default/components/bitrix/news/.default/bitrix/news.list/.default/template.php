@@ -37,4 +37,6 @@ $this->setFrameMode(true);
     <?if ($arParams["DISPLAY_BOTTOM_PAGER"]) :?>
         <div class="mt-4"><?=$arResult["NAV_STRING"]?></div>
     <?endif;?>
+<?else:?>
+    <p>Список новостей пуст</p>
 <?endif?>

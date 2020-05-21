@@ -21,35 +21,7 @@ class Schedule extends CBitrixComponent
     {
         if ($this->arParams['IBLOCK_ID'] == 0) return;
 
-        $this->arResult = $this->getData(
-            [
-//                '>=PROPERTY_START_ORDER' => $curDate,
-//                '<=PROPERTY_END_ORDER' => $curDate,
-                'CODE' => 'general',
-                'ACTIVE' => 'Y',
-            ],
-            ['ID', 'IBLOCK_ID']
-        );
-
-        if (!empty($this->arResult)) {
-            $delivery = [
-                $this->arResult['PROPERTIES']['START_DELIVERY']['VALUE'],
-                $this->arResult['PROPERTIES']['END_DELIVERY']['VALUE'],
-            ];
-            $curDate = date('d.m.Y H:i:s');
-
-            if ($this->arResult['PROPERTIES']['END_DELIVERY']['VALUE'] < $curDate) {
-                $delivery = [
-                    $this->arResult['PROPERTIES']['START_NEXT_DELIVERY']['VALUE'],
-                    $this->arResult['PROPERTIES']['END_NEXT_DELIVERY']['VALUE'],
-                ];
-            }
-
-            $this->arResult['CLOSEST_DELIVERY'] = [
-                'DATE' => FormatDateFromDB($delivery[0], 'd F'),
-                'TIME' => 'с ' . date('H:i', strtotime($delivery[0])) . ' по ' . date('H:i', strtotime($delivery[1]))
-            ];
-        }
+        $this->arResult['CLOSEST_DELIVERY'] = $this->getForOrder();
 
         $this->includeComponentTemplate();
     }
